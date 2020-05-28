@@ -5,7 +5,7 @@ import { DataTableSkeleton, Pagination } from "carbon-components-react";
 import { setDataFetching, setAllSongs, clearAllSongs } from "store/actions";
 import { getAllSongs } from "store/actions/musicLib";
 import store from "../../store";
-import RepoTable from "./RepoTable";
+import SongTable from "./SongTable";
 
 const mapDispatchToProps = {
   getAllSongs,
@@ -28,7 +28,7 @@ const enhance = compose(
       // subscribe to eventlisteners
       //window.addEventListener("click", onClickHandler);
       // populate song data
-      store.dispatch(setDataFetching(true)); // TODO: store.dispatch?
+      store.dispatch(setDataFetching(true));
       store.dispatch(getAllSongs());
     },
     componentDidMount() {},
@@ -56,28 +56,28 @@ export const MusicLibPage = ({
 
   const headers = [
     {
-      key: "name",
-      header: "Name"
+      key: "title",
+      header: "Title"
     },
     {
-      key: "createdAt",
-      header: "Created"
+      key: "artist",
+      header: "Artist"
     },
     {
-      key: "updatedAt",
-      header: "Updated"
+      key: "album",
+      header: "Album"
     },
     {
-      key: "issueCount",
-      header: "Open Issues"
+      key: "albumImage",
+      header: ""
     },
     {
-      key: "stars",
-      header: "Stars"
+      key: "genre",
+      header: "Genre"
     },
     {
-      key: "links",
-      header: "Links"
+      key: "fav",
+      header: "Favorite"
     }
   ];
 
@@ -95,22 +95,26 @@ export const MusicLibPage = ({
     </ul>
   );*/
 
-  /*const getRowItems = (rows) =>
+  const getRowItems = (rows) =>
     rows.map((row) => ({
       ...row,
-      key: row.id,
-      title: row.title,
-      artist: row.artist,
-      album: row.album,
-      genre: row.genre,
-      fav: row.favorite,
-      albumImage: row.album_image,
-      links: <LinkList play={row.play_link} albumLink={row.album_link} />
-    }));*/
+      id: row._id,
+      key: row._id,
+      title: row.Title,
+      artist: row.Artist,
+      album: row.Album,
+      genre: row.Genre,
+      fav: row.Favorite,
+      albumImage: (
+        <img
+          className="kai-table-album-img"
+          src={`https://kaimusic-187c.restdb.io/media/${row.Album_Image}?s=t`}
+        />
+      )
+    }));
 
   let loading = <div></div>;
   if (dataFetching) {
-    // TODO: insert loader tag
     loading = (
       <DataTableSkeleton
         columnCount={headers.length + 1}
@@ -120,14 +124,14 @@ export const MusicLibPage = ({
     );
   }
 
-  const rows = songs;
+  const rows = getRowItems(songs);
 
   return (
     <div className="bx--grid bx--grid--full-width bx--grid--no-gutter repo-page">
       <div className="bx--row repo-page__r1">
         <div className="bx--col-lg-16">
           {loading}
-          <RepoTable
+          <SongTable
             headers={headers}
             rows={rows.slice(firstRowIndex, firstRowIndex + currentPageSize)}
           />
