@@ -5,7 +5,6 @@ import {
   HeaderNavigation,
   HeaderGlobalBar,
   HeaderGlobalAction,
-  HeaderPanel,
   SkipToContent
 } from "carbon-components-react/lib/components/UIShell";
 import Notification20 from "@carbon/icons-react/lib/notification/20";
@@ -28,7 +27,6 @@ const WelcomeHeader = () => (
         <AppSwitcher20 />
       </HeaderGlobalAction>
     </HeaderGlobalBar>
-    <HeaderPanel expanded></HeaderPanel>
   </Header>
 );
 

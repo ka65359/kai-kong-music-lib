@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { compose, lifecycle, pure } from "recompose";
 import { DataTableSkeleton, Pagination } from "carbon-components-react";
+import Favorite32 from "@carbon/icons-react/lib/favorite/20";
+import FavoriteFilled32 from "@carbon/icons-react/lib/favorite--filled/20";
 import { setDataFetching, setAllSongs, clearAllSongs } from "store/actions";
 import { getAllSongs } from "store/actions/musicLib";
 import store from "../../store";
@@ -104,7 +106,7 @@ export const MusicLibPage = ({
       artist: row.Artist,
       album: row.Album,
       genre: row.Genre,
-      fav: row.Favorite,
+      fav: row.Favorite ? <FavoriteFilled32 /> : <Favorite32 />,
       albumImage: (
         <img
           className="kai-table-album-img"
