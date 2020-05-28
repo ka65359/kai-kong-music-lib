@@ -1,4 +1,4 @@
-import { setSongs } from "store/actions";
+import { setDataFetching, setAllSongs } from "store/actions";
 //import store from "../../../store";
 /*
 var data = null;
@@ -77,8 +77,8 @@ export const getAllSongs = () => {
           }
         }]
         */
-
-        dispatch(setSongs(json));
+        dispatch(setDataFetching(false));
+        dispatch(setAllSongs(json));
       });
   };
 };
