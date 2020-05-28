@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Content } from "carbon-components-react/lib/components/UIShell";
 import WelcomeHeader from "./components/WelcomeHeader";
-import ReactPage from "./content/ReactPage";
+import MusicLibPage from "./content/MusicLibPage";
 import "./app.scss";
 
 class App extends Component {
@@ -10,7 +10,7 @@ class App extends Component {
       <>
         <WelcomeHeader />
         <Content>
-          <ReactPage />
+          <MusicLibPage />
         </Content>
       </>
     );
