@@ -1,10 +1,10 @@
 import React from "react";
 import { shallow } from "enzyme";
-import ReactPage from "../ReactPage";
+import MusicLibPage from "../MusicLibPage";
 
-describe("ReactPage() tests", () => {
+describe("MusicLibPage() tests", () => {
   it("should render correctly in mode", () => {
-    const component = shallow(<ReactPage />);
+    const component = shallow(<MusicLibPage />);
 
     expect(component).toMatchSnapshot();
   });
