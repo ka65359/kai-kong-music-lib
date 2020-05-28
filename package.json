@@ -1,15 +1,18 @@
 {
-  "name": "kai-template-redux",
+  "name": "kai-kong-music-lib",
   "version": "1.0.0",
-  "description": "Kai's Project Template with linting/formatting, jest, and redux examples",
+  "description": "A simple music library application",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ka65359/kai-template-redux.git"
+    "url": "https://github.com/ka65359/kai-kong-music-lib.git"
   },
   "author": "Kai Arrowood",
   "license": "MIT",
   "proxy": "http://localhost:4400",
   "dependencies": {
+    "@carbon/icons-react": "^10.3.0",
+    "carbon-components": "^10.3.0",
+    "carbon-components-react": "^7.3.0",
     "ramda": "^0.23.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
