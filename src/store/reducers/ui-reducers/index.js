@@ -1,8 +1,6 @@
 import { combineReducers } from "redux";
-import sample from "./sample-reducer";
-import game from "./tictactoe-reducer";
+import musicLib from "./music-library-reducer";
 
 export default combineReducers({
-  sample,
-  game
+  musicLib
 });
