@@ -109,6 +109,7 @@ export const MusicLibPage = ({
         <img
           className="kai-table-album-img"
           alt={row.Album}
+          title={row.Album}
           src={`https://kaimusic-187c.restdb.io/media/${row.Album_Image}?s=t`}
         />
       )
