@@ -7,6 +7,7 @@ Instructions
 2. Run `npm install`
 3. Run `npm run postinstall`
 4. Run `npm run start`
+5. To successfully run this app from localhost you will need to use the `--disable-web-security` in chrome to avoid CORS errors.
 Note: To see information about what other scripts are available run `npm run scripts`.
 
 This project uses the following technologies:
