@@ -1,8 +1,10 @@
+import _ from "lodash";
 import { createReducer } from "redux-act";
 import {
   setDataFetching,
   setAllSongs,
   clearAllSongs,
+  setSongData,
   addSongToLibrary,
   removeSongFromLibrary,
   setPlaylists,
@@ -40,6 +42,16 @@ export default createReducer(
       }
       let rslt = Object.assign({}, state, {
         songs: payload
+      });
+      return rslt;
+    },
+    [setSongData]: (state, payload) => {
+      let songs = _.cloneDeep(state.songs);
+      songs.map((song) => {
+        return song._id !== payload._id ? song : payload;
+      });
+      let rslt = Object.assign({}, state, {
+        songs: songs
       });
       return rslt;
     },

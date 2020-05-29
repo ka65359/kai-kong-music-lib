@@ -5,6 +5,9 @@ export const setDataFetching = createAction(
 );
 export const setAllSongs = createAction("Set all songs in the library");
 export const clearAllSongs = createAction("Clear all songs in the library");
+export const setSongData = createAction(
+  "Update the data for an individual song"
+);
 export const addSongToLibrary = createAction("Add a song to the song library");
 export const removeSongFromLibrary = createAction(
   "Remove a song from the song library"

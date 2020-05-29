@@ -5,14 +5,15 @@ import { DataTableSkeleton, Pagination } from "carbon-components-react";
 import Favorite32 from "@carbon/icons-react/lib/favorite/20";
 import FavoriteFilled32 from "@carbon/icons-react/lib/favorite--filled/20";
 import { setDataFetching, setAllSongs, clearAllSongs } from "store/actions";
-import { getAllSongs } from "store/actions/musicLib";
+import { getAllSongs, updateSong } from "store/actions/musicLib";
 import store from "../../store";
 import SongTable from "./SongTable";
 
 const mapDispatchToProps = {
   getAllSongs,
   setAllSongs,
-  clearAllSongs
+  clearAllSongs,
+  updateSong
 };
 
 const enhance = compose(
@@ -48,7 +49,8 @@ const enhance = compose(
 
 export const MusicLibPage = ({
   songs,
-  dataFetching
+  dataFetching,
+  updateSong
   /* playlists,
   setAllSongs,
   clearAllSongs*/
@@ -83,19 +85,21 @@ export const MusicLibPage = ({
     }
   ];
 
-  /*const LinkList = ({ url, homepageUrl }) => (
-    <ul style={{ display: "flex" }}>
-      <li>
-        <Link href={url}>GitHub</Link>
-      </li>
-      {homepageUrl && (
-        <li>
-          <span>&nbsp;|&nbsp;</span>
-          <Link href={homepageUrl}>Homepage</Link>
-        </li>
-      )}
-    </ul>
-  );*/
+  const toggleFavorite = (row) => {
+    row.Favorite = !row.Favorite;
+    updateSong(row);
+  };
+
+  const getFavButton = (row) => {
+    let icon = row.Favorite ? <FavoriteFilled32 /> : <Favorite32 />;
+    let classStr = "kai-fav-" + row._id;
+
+    return (
+      <div className={classStr} onClick={() => toggleFavorite(row)}>
+        {icon}
+      </div>
+    );
+  };
 
   const getRowItems = (rows) =>
     rows.map((row) => ({
@@ -106,7 +110,7 @@ export const MusicLibPage = ({
       artist: row.Artist,
       album: row.Album,
       genre: row.Genre,
-      fav: row.Favorite ? <FavoriteFilled32 /> : <Favorite32 />,
+      fav: getFavButton(row),
       albumImage: (
         <img
           className="kai-table-album-img"
