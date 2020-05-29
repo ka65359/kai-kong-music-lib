@@ -9,6 +9,7 @@
   "author": "Kai Arrowood",
   "license": "MIT",
   "proxy": "http://localhost:4400",
+  "secure": false,
   "dependencies": {
     "@carbon/icons-react": "^10.3.0",
     "@carbon/themes": "^10.12.0",
@@ -30,8 +31,11 @@
   },
   "scripts": {
     "build": "react-scripts build",
+    "cf-login": "cf login -a https://api.ng.bluemix.net --sso",
     "clean": "npm rebuild",
     "coverage": "yarn test -- --coverage",
+    "deploy": "cf push -f manifest.yml",
+    "deploy:build": "run-p build deploy",
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
     "lint": "eslint ./src",
     "lint:formatted": "run-p format lint",
