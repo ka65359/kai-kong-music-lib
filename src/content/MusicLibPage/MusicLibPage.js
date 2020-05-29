@@ -132,7 +132,7 @@ export const MusicLibPage = ({
     );
   }
 
-  const rows = getRowItems(songs);
+  const rows = getRowItems(songs) || [];
 
   return (
     <div className="bx--grid bx--grid--full-width bx--grid--no-gutter repo-page">
