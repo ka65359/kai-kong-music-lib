@@ -1,4 +1,5 @@
 const express = require("express");
+const request = require("request");
 const bodyParser = require("body-parser");
 const pino = require("express-pino-logger")();
 
@@ -9,17 +10,16 @@ app.use(pino);
 // Make public dir available on server
 app.use("/public", express.static("public"));
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 // Sample API endpoint
 app.get("/kai-api/greeting", (req, res) => {
   const name = req.query.name || "World";
   res.setHeader("Content-Type", "application/json");
   res.send(JSON.stringify({ greeting: `Hello ${name}!` }));
-});
-
-// Every time / is accessed....
-app.get("/", (req, res) => {
-  res.send("An alligator approaches!");
-  console.log("We got a request!");
 });
 
 // Make requests to the API on port 4400

@@ -1,8 +1,8 @@
 import { setDataFetching, setAllSongs, setSongData } from "store/actions";
+const key = "83a235df14c0d1972f4a394a896951f69e05f"; // DEV-MODE KEY!!
+//const key = "5ed16aa12032862ff2ce265d";
 
 export const getAllSongs = () => {
-  // TODO: env.process or whatever it is for env variables check express config
-  const key = "83a235df14c0d1972f4a394a896951f69e05f";
   return (dispatch) => {
     return fetch("https://kaimusic-187c.restdb.io/rest/songs", {
       method: "GET",
@@ -18,7 +18,7 @@ export const getAllSongs = () => {
           if (response.ok) {
             return response.json();
           } else {
-            return {};
+            return [];
           }
         },
         (error) => {
@@ -47,8 +47,6 @@ export const getAllSongs = () => {
 };
 
 export const updateSong = (payload) => {
-  // TODO: env.process or whatever it is for env variables check express config
-  const key = "83a235df14c0d1972f4a394a896951f69e05f";
   if (payload._mock) {
     delete payload._mock;
   }
