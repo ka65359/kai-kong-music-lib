@@ -12,6 +12,7 @@ import {
   TableCell,
   TableExpandedRow
 } from "carbon-components-react";
+import "./_song-table.scss";
 
 const SongTable = ({ rows, headers }) => {
   const getRowDescription = (rowId) => {

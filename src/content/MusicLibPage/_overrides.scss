@@ -1,0 +1,37 @@
+$kai-background: #262626;
+$kai-color: #f4f4f4;
+
+.bx--side-nav__navigation {
+  background-color: $kai-background;
+}
+
+.bx--side-nav__link,
+.bx--side-nav__menu-item,
+a.bx--side-nav__link > .bx--side-nav__link-text,
+.bx--side-nav a.bx--header__menu-item .bx--text-truncate-end {
+  color: $kai-color;
+}
+
+.bx--side-nav__icon > svg {
+  fill: $kai-color;
+}
+
+a.bx--side-nav__link:hover .bx--side-nav__icon > svg,
+a.bx--side-nav__link:active .bx--side-nav__icon > svg,
+a.bx--side-nav__link[aria-current="page"] .bx--side-nav__icon > svg,
+a.bx--side-nav__link .bx--side-nav__icon--current > svg {
+  fill: $kai-background;
+}
+
+.bx--side-nav__link--current:before {
+  background-color: #4589ff;
+}
+/*
+.bx--side-nav__link:hover{	background color	Gray 10-hover}
+.bx--side-nav__link:hover	text color	Gray 100
+.bx--side-nav__link:focus	{border	Blue 60}
+.bx--side-nav__link:active	{background color	Gray 30}
+.bx--side-nav__link:active	{text color	Gray 100}
+.bx--side-nav__link--current{	background color	Gray 30}
+.bx--side-nav__link--current	text color	Gray 100
+:before	{background color	Blue 60}*/

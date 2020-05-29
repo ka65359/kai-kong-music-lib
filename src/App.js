@@ -22,7 +22,10 @@ class App extends Component {
           isChildOfHeader={false}
           aria-label="Side navigation">
           <SideNavItems>
-            <SideNavLink renderIcon={Catalog32} href="javascript:void(0)">
+            <SideNavLink
+              renderIcon={Catalog32}
+              aria-current="page"
+              href="javascript:void(0)">
               Library
             </SideNavLink>
             <SideNavLink renderIcon={Playlist32} href="javascript:void(0)">

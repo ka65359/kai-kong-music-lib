@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import "./index.scss";
 import AppContainer from "./AppContainer";
 import App from "./App";
 import store from "./store";
-import "./index.scss";
 
 // save store to window for debug purposes
 if (process.env.NODE_ENV !== "production") {

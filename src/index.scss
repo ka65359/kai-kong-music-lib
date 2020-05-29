@@ -3,6 +3,12 @@ $feature-flags: (
   grid-columns-16: true
 );
 
+@import "@carbon/themes/scss/themes";
+// Use the gray 90 theme
+$carbon--theme: $carbon--theme--g100;
+// Apply theme
+@include carbon--theme();
+
 // Feature flags
 $css--font-face: true;
 $css--plex: true;
