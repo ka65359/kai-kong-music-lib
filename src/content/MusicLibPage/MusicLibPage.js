@@ -92,7 +92,7 @@ export const MusicLibPage = ({
 
   const getFavButton = (row) => {
     let icon = row.Favorite ? <FavoriteFilled32 /> : <Favorite32 />;
-    let classStr = "kai-fav-" + row._id;
+    let classStr = "kai-fav-icon kai-fav-" + row._id;
 
     return (
       <div className={classStr} onClick={() => toggleFavorite(row)}>
