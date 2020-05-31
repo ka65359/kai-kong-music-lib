@@ -97,7 +97,7 @@
     ],
     "*.+(css|scss)": [
       "prettier --write",
-      "stylelint"
+      "stylelint --allow-empty-input"
     ]
   },
   "browserslist": [
