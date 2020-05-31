@@ -181,12 +181,17 @@ export const MusicLibPage = ({
     if (!searchStr) {
       return rows;
     }
+    searchStr = searchStr.toLowerCase();
     const searchFields = ["titleText", "Artist", "Album"];
     const re = new RegExp(`.*${searchStr}.*`);
     let filteredRows = [];
     for (let j = 0; j < rows.length; j++) {
       for (let i = 0; i < searchFields.length; i++) {
-        if (rows[j][searchFields[i]].match(re)) {
+        let testStr = rows[j][searchFields[i]].toLowerCase();
+        if (typeof testStr == "string") {
+          testStr = testStr.toLowerCase();
+        }
+        if (testStr.match(re)) {
           filteredRows.push(rows[j]);
           break;
         }
