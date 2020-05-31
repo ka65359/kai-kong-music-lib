@@ -1,4 +1,5 @@
 import React from "react";
+import _ from "lodash";
 import {
   DataTable,
   TableContainer,
@@ -11,6 +12,8 @@ import {
   TableBody,
   TableCell
 } from "carbon-components-react";
+import { setTableSortData } from "store/actions";
+import store from "../../store";
 import "./_song-table.scss";
 
 const SongTable = ({ rows, headers, onSearchUpdate }) => {
@@ -19,6 +22,19 @@ const SongTable = ({ rows, headers, onSearchUpdate }) => {
       rows={rows}
       headers={headers}
       isSortable
+      sortRow={(a, b, { sortDirection, key }) => {
+        // Don't use built in sorting, instead take the event and update sort state
+        if (
+          _.get(
+            store.getState(),
+            "ui.musicLib.tableSortData.sortDirection",
+            ""
+          ) !== sortDirection ||
+          _.get(store.getState(), "ui.musicLib.tableSortData.key", "") !== key
+        ) {
+          store.dispatch(setTableSortData({ sortDirection, key })); // only the first time in
+        }
+      }}
       render={({
         rows,
         headers,

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { compose, lifecycle, pure } from "recompose";
+import _ from "lodash";
 import { DataTableSkeleton, Pagination } from "carbon-components-react";
 import Favorite32 from "@carbon/icons-react/lib/favorite/20";
 import FavoriteFilled32 from "@carbon/icons-react/lib/favorite--filled/20";
@@ -28,6 +29,7 @@ const enhance = compose(
     (state) => ({
       songs: state.ui.musicLib.songs,
       searchStr: state.ui.musicLib.searchStr,
+      tableSortData: state.ui.musicLib.tableSortData,
       dataFetching: state.ui.musicLib.dataFetching,
       playlists: state.ui.musicLib.playlists
     }),
@@ -57,6 +59,7 @@ const enhance = compose(
 export const MusicLibPage = ({
   songs,
   searchStr,
+  tableSortData,
   dataFetching,
   updateSong,
   setTableSearchStr
@@ -69,28 +72,30 @@ export const MusicLibPage = ({
 
   const headers = [
     {
-      key: "title",
+      key: "Title",
       header: "Title"
     },
     {
-      key: "artist",
+      key: "Artist",
       header: "Artist"
     },
     {
-      key: "album",
+      key: "Album",
       header: "Album"
     },
     {
-      key: "albumImage",
-      header: ""
+      key: "AlbumImage",
+      header: "",
+      isSortable: false
     },
     {
-      key: "genre",
+      key: "Genre",
       header: "Genre"
     },
     {
-      key: "fav",
-      header: "Favorite"
+      key: "Favorite",
+      header: "Favorite",
+      isSortable: false
     }
   ];
 
@@ -150,13 +155,13 @@ export const MusicLibPage = ({
       ...row,
       id: row._id,
       key: row._id,
-      title: row.Play_Link ? getSongTitleLink(row) : row.Title,
+      Title: row.Play_Link ? getSongTitleLink(row) : row.Title,
       titleText: row.Title,
-      artist: row.Artist,
-      album: row.Album,
-      genre: row.Genre,
-      fav: getFavButton(row),
-      albumImage: getAlbumImage(row)
+      Artist: row.Artist,
+      Album: row.Album,
+      Genre: row.Genre,
+      Favorite: getFavButton(row),
+      AlbumImage: getAlbumImage(row)
     }));
 
   let loading = <div></div>;
@@ -176,7 +181,7 @@ export const MusicLibPage = ({
     if (!searchStr) {
       return rows;
     }
-    const searchFields = ["titleText", "artist", "album"];
+    const searchFields = ["titleText", "Artist", "Album"];
     const re = new RegExp(`.*${searchStr}.*`);
     let filteredRows = [];
     for (let j = 0; j < rows.length; j++) {
@@ -190,6 +195,57 @@ export const MusicLibPage = ({
     return filteredRows;
   };
 
+  const sortSongs = (rows, sortDirection, key) => {
+    if (
+      key == "Album_Link" ||
+      key == "Album_Image" ||
+      key == "Play_Link" ||
+      key == "Favorite"
+    ) {
+      console.error("Sorting by " + key + " is disabled.");
+      return rows;
+    }
+    const compare = (a, b) => {
+      a = a[key];
+      b = b[key];
+
+      if (typeof a == "string") {
+        a = a.toLowerCase();
+      } else if (typeof a == "object") {
+        a = _.get(a, "props.children", "");
+      }
+      if (typeof b == "string") {
+        b = b.toLowerCase();
+      } else if (typeof b == "object") {
+        a = _.get(b, "props.children", "");
+      }
+      return a > b ? 1 : -1;
+    };
+    let sortedRows;
+    if (sortDirection !== "DESC") {
+      sortedRows = rows.sort((a, b) => {
+        return compare(a, b);
+      });
+    } else {
+      sortedRows = rows.sort((a, b) => {
+        return compare(b, a);
+      });
+    }
+    return sortedRows;
+  };
+
+  let displayedRows = rows;
+  if (tableSortData.key) {
+    displayedRows = sortSongs(
+      rows,
+      tableSortData.sortDirection,
+      tableSortData.key
+    );
+  }
+  if (searchStr) {
+    displayedRows = getFilteredRows(searchStr, displayedRows);
+  }
+
   return (
     <div className="bx--grid bx--grid--full-width bx--grid--no-gutter music-lib-page">
       <div className="bx--row music-lib-page__r1">
@@ -197,14 +253,16 @@ export const MusicLibPage = ({
           {loading}
           <SongTable
             headers={headers}
-            rows={getFilteredRows(searchStr, rows).slice(
+            rows={displayedRows.slice(
               firstRowIndex,
               firstRowIndex + currentPageSize
             )}
+            sortKey={tableSortData.key}
+            sortDir={tableSortData.sortDirection}
             onSearchUpdate={(evt) => setTableSearchStr(evt.target.value)}
           />
           <Pagination
-            totalItems={songs.length}
+            totalItems={displayedRows.length}
             backwardText="Previous page"
             forwardText="Next page"
             pageSize={currentPageSize}

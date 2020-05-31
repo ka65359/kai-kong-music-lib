@@ -6,6 +6,7 @@ import {
   clearAllSongs,
   setSongData,
   setTableSearchStr,
+  setTableSortData,
   addSongToLibrary,
   removeSongFromLibrary,
   setPlaylists,
@@ -20,6 +21,7 @@ export const initialState = {
   dataFetching: false,
   songs: [],
   searchStr: "",
+  tableSortData: { key: "title", dir: "ASC" },
   playlists: []
 };
 
@@ -60,6 +62,12 @@ export default createReducer(
     [setTableSearchStr]: (state, payload) => {
       let rslt = Object.assign({}, state, {
         searchStr: payload
+      });
+      return rslt;
+    },
+    [setTableSortData]: (state, payload) => {
+      let rslt = Object.assign({}, state, {
+        tableSortData: payload
       });
       return rslt;
     },
