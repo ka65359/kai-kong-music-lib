@@ -40,23 +40,23 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
     const urlRegex = new RegExp(/^(https?):\/\/[^\s$.?#].[^\s]*$/);
     const imgRegex = new RegExp(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/);
     song.isValid = true;
-    if (!song.title) {
+    if (!song.Title) {
       song.isValid = false;
-      song.fieldValid.title = false;
+      song.fieldValid.Title = false;
     } else {
-      song.fieldValid.title = true;
+      song.fieldValid.Title = true;
     }
-    if (song.albumLink && !song.albumLink.match(imgRegex)) {
+    if (song.Album_Link && !song.Album_Link.match(imgRegex)) {
       song.isValid = false;
-      song.fieldValid.albumLink = false;
+      song.fieldValid.Album_Link = false;
     } else {
-      song.fieldValid.albumLink = true;
+      song.fieldValid.Album_Link = true;
     }
-    if (song.playLink && !song.playLink.match(urlRegex)) {
+    if (song.Play_Link && !song.Play_Link.match(urlRegex)) {
       song.isValid = false;
-      song.fieldValid.playLink = false;
+      song.fieldValid.Play_Link = false;
     } else {
-      song.fieldValid.playLink = true;
+      song.fieldValid.Play_Link = true;
     }
     return song;
   }; // TODO: CLOSE DIALOG NEEDS TO CLEAR NEW SONG DATA PREVIOUSLY ENTERED
@@ -76,7 +76,7 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
         <TextInput
           className="kai-textbox"
           id="kai-add-song-title"
-          invalid={!song.fieldValid.title}
+          invalid={!song.fieldValid.Title}
           invalidText="This field is required"
           labelText=<span>
             Title <span className="kai-required-star">*</span>
@@ -113,31 +113,31 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
         <TextInput
           className="kai-textbox"
           id="kai-add-song-album-link"
-          invalid={!song.fieldValid.albumLink}
+          invalid={!song.fieldValid.Album_Link}
           invalidText="Please enter a valid URL"
           labelText="Album Image Link"
-          onChange={(evt) => handleFieldChanged("AlbumLink", evt)}
+          onChange={(evt) => handleFieldChanged("Album_Link", evt)}
           onBlur={() => {
             setSong(checkIsValid(song));
           }}
           placeholder="Ex. http://www.example.com/image.jpg"
           helperText="A link to the album cover image"
-          value={song.AlbumLink}
+          value={song.Album_Link}
           type="text"
         />
         <TextInput
           className="kai-textbox"
           id="kai-add-song-play-link"
-          invalid={!song.fieldValid.playLink}
+          invalid={!song.fieldValid.Play_Link}
           invalidText="Please enter a valid URL"
           labelText="Play Link"
-          onChange={(evt) => handleFieldChanged("PlayLink", evt)}
+          onChange={(evt) => handleFieldChanged("Play_Link", evt)}
           onBlur={() => {
             setSong(checkIsValid(song));
           }}
           placeholder="Ex. http://www.example.com/"
           helperText="A link to play the song"
-          value={song.PlayLink}
+          value={song.Play_Link}
           type="text"
         />
         <Checkbox
