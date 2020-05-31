@@ -16,6 +16,7 @@ const SongTable = ({ rows, headers }) => {
     <DataTable
       rows={rows}
       headers={headers}
+      isSortable
       render={({
         rows,
         headers,
