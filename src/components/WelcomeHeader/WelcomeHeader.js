@@ -81,33 +81,33 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
           labelText=<span>
             Title <span className="kai-required-star">*</span>
           </span>
-          onChange={(evt) => handleFieldChanged("title", evt)}
+          onChange={(evt) => handleFieldChanged("Title", evt)}
           onBlur={() => {
             setSong(checkIsValid(song));
           }}
-          value={song.title}
+          value={song.Title}
           type="text"
         />
         <TextInput
           className="kai-textbox"
           id="kai-add-song-artist"
           labelText="Artist"
-          onChange={(evt) => handleFieldChanged("artist", evt)}
+          onChange={(evt) => handleFieldChanged("Artist", evt)}
           onBlur={() => {
             setSong(checkIsValid(song));
           }}
-          value={song.artist}
+          value={song.Artist}
           type="text"
         />
         <TextInput
           className="kai-textbox"
           id="kai-add-song-album"
           labelText="Album"
-          onChange={(evt) => handleFieldChanged("album", evt)}
+          onChange={(evt) => handleFieldChanged("Album", evt)}
           onBlur={() => {
             setSong(checkIsValid(song));
           }}
-          value={song.album}
+          value={song.Album}
           type="text"
         />
         <TextInput
@@ -116,13 +116,13 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
           invalid={!song.fieldValid.albumLink}
           invalidText="Please enter a valid URL"
           labelText="Album Image Link"
-          onChange={(evt) => handleFieldChanged("albumLink", evt)}
+          onChange={(evt) => handleFieldChanged("AlbumLink", evt)}
           onBlur={() => {
             setSong(checkIsValid(song));
           }}
           placeholder="Ex. http://www.example.com/image.jpg"
           helperText="A link to the album cover image"
-          value={song.albumLink}
+          value={song.AlbumLink}
           type="text"
         />
         <TextInput
@@ -131,21 +131,21 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
           invalid={!song.fieldValid.playLink}
           invalidText="Please enter a valid URL"
           labelText="Play Link"
-          onChange={(evt) => handleFieldChanged("playLink", evt)}
+          onChange={(evt) => handleFieldChanged("PlayLink", evt)}
           onBlur={() => {
             setSong(checkIsValid(song));
           }}
           placeholder="Ex. http://www.example.com/"
           helperText="A link to play the song"
-          value={song.playLink}
+          value={song.PlayLink}
           type="text"
         />
         <Checkbox
           className="kai-checkbox"
           id="kai-add-song-favorite"
           labelText="Favorite"
-          onChange={(evt) => handleFieldChanged("favorite", evt, "checkbox")}
-          checked={song.favorite}
+          onChange={(evt) => handleFieldChanged("Favorite", evt, "checkbox")}
+          checked={song.Favorite}
         />
       </div>
       <br />
@@ -168,13 +168,13 @@ const enhance = compose(
   }),
   withState("addModalOpen", "setAddModalOpen", false),
   withState("song", "setSong", {
-    title: "",
-    artist: "",
-    album: "",
-    albumLink: "",
-    genre: "",
-    favorite: false,
-    playLink: "",
+    Title: "",
+    Artist: "",
+    Album: "",
+    AlbumLink: "",
+    Genre: "",
+    Favorite: false,
+    PlayLink: "",
     isValid: true,
     fieldValid: {}
   }),

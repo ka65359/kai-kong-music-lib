@@ -48,18 +48,18 @@ export const getAllSongs = () => {
 
 export const createSong = (payload) => {
   let JSONBody = {};
-  JSONBody.Title = payload.title;
-  JSONBody.Artist = payload.artist;
-  JSONBody.Album = payload.album;
-  JSONBody.Genre = payload.genre;
+  JSONBody.Title = payload.Title;
+  JSONBody.Artist = payload.Artist;
+  JSONBody.Album = payload.Album;
+  JSONBody.Genre = payload.Genre;
   // RestDB.io must not include payload fields with required regex that have no value
-  if (payload.albumLink) {
-    JSONBody.Album_Link = payload.albumLink;
+  if (payload.AlbumLink) {
+    JSONBody.Album_Link = payload.AlbumLink;
   }
-  if (payload.playLink) {
-    JSONBody.Play_Link = payload.playLink;
+  if (payload.PlayLink) {
+    JSONBody.Play_Link = payload.PlayLink;
   }
-  JSONBody.Favorite = payload.favorite;
+  JSONBody.Favorite = payload.Favorite;
   return (dispatch) => {
     return fetch("https://kaimusic-187c.restdb.io/rest/songs", {
       method: "POST",
