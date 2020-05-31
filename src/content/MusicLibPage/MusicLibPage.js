@@ -111,13 +111,15 @@ export const MusicLibPage = ({
       album: row.Album,
       genre: row.Genre,
       fav: getFavButton(row),
-      albumImage: (
+      albumImage: row.Album_Image ? (
         <img
           className="kai-table-album-img"
           alt={row.Album}
           title={row.Album}
           src={`https://kaimusic-187c.restdb.io/media/${row.Album_Image}?s=t`}
         />
+      ) : (
+        ""
       )
     }));
 
@@ -135,8 +137,8 @@ export const MusicLibPage = ({
   const rows = getRowItems(songs) || [];
 
   return (
-    <div className="bx--grid bx--grid--full-width bx--grid--no-gutter repo-page">
-      <div className="bx--row repo-page__r1">
+    <div className="bx--grid bx--grid--full-width bx--grid--no-gutter music-lib-page">
+      <div className="bx--row music-lib-page__r1">
         <div className="bx--col-lg-16">
           {loading}
           <SongTable

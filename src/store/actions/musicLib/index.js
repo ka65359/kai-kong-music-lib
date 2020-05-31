@@ -46,6 +46,52 @@ export const getAllSongs = () => {
   };
 };
 
+export const createSong = (payload) => {
+  let JSONBody = {};
+  JSONBody.Title = payload.title;
+  JSONBody.Artist = payload.artist;
+  JSONBody.Album = payload.album;
+  JSONBody.Genre = payload.genre;
+  // RestDB.io must not include payload fields with required regex that have no value
+  if (payload.albumLink) {
+    JSONBody.Album_Link = payload.albumLink;
+  }
+  if (payload.playLink) {
+    JSONBody.Play_Link = payload.playLink;
+  }
+  JSONBody.Favorite = payload.favorite;
+  return (dispatch) => {
+    return fetch("https://kaimusic-187c.restdb.io/rest/songs", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Cache-Control": "no-cache",
+        "x-apikey": key
+      },
+      body: JSON.stringify(JSONBody)
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return {};
+          }
+        },
+        (error) => {
+          if (error) {
+            console.error(error);
+            throw new Error(error);
+          }
+        }
+      )
+      .then(() => {
+        dispatch(getAllSongs());
+      });
+  };
+};
+
 export const updateSong = (payload) => {
   if (payload._mock) {
     delete payload._mock;
