@@ -5,21 +5,13 @@ import {
   Table,
   TableHead,
   TableRow,
-  TableExpandHeader,
   TableHeader,
   TableBody,
-  TableExpandRow,
-  TableCell,
-  TableExpandedRow
+  TableCell
 } from "carbon-components-react";
 import "./_song-table.scss";
 
 const SongTable = ({ rows, headers }) => {
-  const getRowDescription = (rowId) => {
-    const row = rows.find(({ id }) => id === rowId);
-    return row ? row.description : "";
-  };
-
   return (
     <DataTable
       rows={rows}
@@ -37,7 +29,6 @@ const SongTable = ({ rows, headers }) => {
           <Table {...getTableProps()}>
             <TableHead>
               <TableRow>
-                <TableExpandHeader />
                 {headers.map((header) => (
                   <TableHeader
                     key={header.header}
@@ -50,14 +41,11 @@ const SongTable = ({ rows, headers }) => {
             <TableBody>
               {rows.map((row) => (
                 <React.Fragment key={row.id}>
-                  <TableExpandRow {...getRowProps({ row })}>
+                  <TableRow {...getRowProps({ row })}>
                     {row.cells.map((cell) => (
                       <TableCell key={cell.id}>{cell.value}</TableCell>
                     ))}
-                  </TableExpandRow>
-                  <TableExpandedRow colSpan={headers.length + 1}>
-                    <p>{getRowDescription(row.id)}</p>
-                  </TableExpandedRow>
+                  </TableRow>
                 </React.Fragment>
               ))}
             </TableBody>
