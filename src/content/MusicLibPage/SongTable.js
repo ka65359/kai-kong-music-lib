@@ -1,5 +1,23 @@
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * @author Kai
+ * @version 1.0.0
+ * @module SongTable
+ * @description A table to display data about songs.
+ * @exports SongTable
+ *
+ * @typedef {Object} SongTable
+ * @param  {Object[]}  rows           Table rows
+ * @param  {Object[]}  headers        Table headers
+ * @param  {function}  onSearchUpdate Callback when the search bar value is changed
+ *
+ */
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 import React from "react";
 import _ from "lodash";
+import PropTypes from "prop-types";
 import {
   DataTable,
   TableContainer,
@@ -79,6 +97,12 @@ const SongTable = ({ rows, headers, onSearchUpdate }) => {
       )}
     />
   );
+};
+
+SongTable.propTypes = {
+  rows: PropTypes.array.isRequired,
+  headers: PropTypes.array.isRequired,
+  onSearchUpdate: PropTypes.func.isRequired
 };
 
 export default SongTable;
