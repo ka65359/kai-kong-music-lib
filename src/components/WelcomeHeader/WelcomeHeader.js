@@ -37,9 +37,8 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
     setSong(song);
   };
   const checkIsValid = (song) => {
-    const urlRegex = new RegExp(
-      /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/
-    );
+    const urlRegex = new RegExp(/^(https?):\/\/[^\s$.?#].[^\s]*$/);
+    const imgRegex = new RegExp(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/);
     song.isValid = true;
     if (!song.title) {
       song.isValid = false;
@@ -47,7 +46,7 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
     } else {
       song.fieldValid.title = true;
     }
-    if (song.albumLink && !song.albumLink.match(urlRegex)) {
+    if (song.albumLink && !song.albumLink.match(imgRegex)) {
       song.isValid = false;
       song.fieldValid.albumLink = false;
     } else {
