@@ -101,26 +101,52 @@ export const MusicLibPage = ({
     );
   };
 
-  const getRowItems = (rows) =>
-    rows.map((row) => ({
-      ...row,
-      id: row._id,
-      key: row._id,
-      title: row.Title,
-      artist: row.Artist,
-      album: row.Album,
-      genre: row.Genre,
-      fav: getFavButton(row),
-      albumImage: row.Album_Image ? (
+  const getSongTitleLink = (row) => {
+    return (
+      <a
+        href={row.Play_Link}
+        title="Play Song"
+        rel="external noopener noreferrer"
+        target="_blank">
+        {row.Title}
+      </a>
+    );
+  };
+
+  const getAlbumImage = (row) => {
+    if (row.Album_Image) {
+      return (
         <img
           className="kai-table-album-img"
           alt={row.Album}
           title={row.Album}
           src={`https://kaimusic-187c.restdb.io/media/${row.Album_Image}?s=t`}
         />
-      ) : (
-        ""
-      )
+      );
+    } else if (row.Album_Link) {
+      return (
+        <img
+          className="kai-table-album-img-link"
+          alt={row.Album}
+          title={row.Album}
+          src={row.Album_Link}
+        />
+      );
+    }
+    return <div></div>;
+  };
+
+  const getRowItems = (rows) =>
+    rows.map((row) => ({
+      ...row,
+      id: row._id,
+      key: row._id,
+      title: row.Play_Link ? getSongTitleLink(row) : row.Title,
+      artist: row.Artist,
+      album: row.Album,
+      genre: row.Genre,
+      fav: getFavButton(row),
+      albumImage: getAlbumImage(row)
     }));
 
   let loading = <div></div>;
@@ -134,7 +160,7 @@ export const MusicLibPage = ({
     );
   }
 
-  const rows = getRowItems(songs) || [];
+  const rows = getRowItems(songs);
 
   return (
     <div className="bx--grid bx--grid--full-width bx--grid--no-gutter music-lib-page">
