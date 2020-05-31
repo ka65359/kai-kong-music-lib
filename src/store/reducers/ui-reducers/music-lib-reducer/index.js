@@ -5,6 +5,7 @@ import {
   setAllSongs,
   clearAllSongs,
   setSongData,
+  setTableSearchStr,
   addSongToLibrary,
   removeSongFromLibrary,
   setPlaylists,
@@ -18,6 +19,7 @@ import {
 export const initialState = {
   dataFetching: false,
   songs: [],
+  searchStr: "",
   playlists: []
 };
 
@@ -52,6 +54,12 @@ export default createReducer(
       });
       let rslt = Object.assign({}, state, {
         songs: songs
+      });
+      return rslt;
+    },
+    [setTableSearchStr]: (state, payload) => {
+      let rslt = Object.assign({}, state, {
+        searchStr: payload
       });
       return rslt;
     },

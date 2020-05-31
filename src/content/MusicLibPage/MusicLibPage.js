@@ -4,7 +4,12 @@ import { compose, lifecycle, pure } from "recompose";
 import { DataTableSkeleton, Pagination } from "carbon-components-react";
 import Favorite32 from "@carbon/icons-react/lib/favorite/20";
 import FavoriteFilled32 from "@carbon/icons-react/lib/favorite--filled/20";
-import { setDataFetching, setAllSongs, clearAllSongs } from "store/actions";
+import {
+  setDataFetching,
+  setAllSongs,
+  clearAllSongs,
+  setTableSearchStr
+} from "store/actions";
 import { getAllSongs, updateSong } from "store/actions/musicLib";
 import store from "../../store";
 import SongTable from "./SongTable";
@@ -13,7 +18,8 @@ const mapDispatchToProps = {
   getAllSongs,
   setAllSongs,
   clearAllSongs,
-  updateSong
+  updateSong,
+  setTableSearchStr
 };
 
 const enhance = compose(
@@ -21,6 +27,7 @@ const enhance = compose(
   connect(
     (state) => ({
       songs: state.ui.musicLib.songs,
+      searchStr: state.ui.musicLib.searchStr,
       dataFetching: state.ui.musicLib.dataFetching,
       playlists: state.ui.musicLib.playlists
     }),
@@ -49,8 +56,10 @@ const enhance = compose(
 
 export const MusicLibPage = ({
   songs,
+  searchStr,
   dataFetching,
-  updateSong
+  updateSong,
+  setTableSearchStr
   /* playlists,
   setAllSongs,
   clearAllSongs*/
@@ -142,6 +151,7 @@ export const MusicLibPage = ({
       id: row._id,
       key: row._id,
       title: row.Play_Link ? getSongTitleLink(row) : row.Title,
+      titleText: row.Title,
       artist: row.Artist,
       album: row.Album,
       genre: row.Genre,
@@ -162,6 +172,24 @@ export const MusicLibPage = ({
 
   const rows = getRowItems(songs);
 
+  const getFilteredRows = (searchStr, rows) => {
+    if (!searchStr) {
+      return rows;
+    }
+    const searchFields = ["titleText", "artist", "album"];
+    const re = new RegExp(`.*${searchStr}.*`);
+    let filteredRows = [];
+    for (let j = 0; j < rows.length; j++) {
+      for (let i = 0; i < searchFields.length; i++) {
+        if (rows[j][searchFields[i]].match(re)) {
+          filteredRows.push(rows[j]);
+          break;
+        }
+      }
+    }
+    return filteredRows;
+  };
+
   return (
     <div className="bx--grid bx--grid--full-width bx--grid--no-gutter music-lib-page">
       <div className="bx--row music-lib-page__r1">
@@ -169,7 +197,11 @@ export const MusicLibPage = ({
           {loading}
           <SongTable
             headers={headers}
-            rows={rows.slice(firstRowIndex, firstRowIndex + currentPageSize)}
+            rows={getFilteredRows(searchStr, rows).slice(
+              firstRowIndex,
+              firstRowIndex + currentPageSize
+            )}
+            onSearchUpdate={(evt) => setTableSearchStr(evt.target.value)}
           />
           <Pagination
             totalItems={songs.length}

@@ -2,6 +2,8 @@ import React from "react";
 import {
   DataTable,
   TableContainer,
+  TableToolbar,
+  TableToolbarSearch,
   Table,
   TableHead,
   TableRow,
@@ -11,7 +13,7 @@ import {
 } from "carbon-components-react";
 import "./_song-table.scss";
 
-const SongTable = ({ rows, headers }) => {
+const SongTable = ({ rows, headers, onSearchUpdate }) => {
   return (
     <DataTable
       rows={rows}
@@ -27,6 +29,12 @@ const SongTable = ({ rows, headers }) => {
         <TableContainer
           title="My Music Library"
           description="A collection of music.">
+          <TableToolbar>
+            <TableToolbarSearch
+              onChange={onSearchUpdate}
+              placeHolderText="Search title, artist, or album"
+            />
+          </TableToolbar>
           <Table {...getTableProps()}>
             <TableHead>
               <TableRow>
