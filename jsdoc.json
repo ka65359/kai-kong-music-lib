@@ -1,0 +1,42 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "source": {
+    "include": "src/",
+    "includePattern": "\\.js$",
+    "excludePattern": "(node_modules/|docs/|__tests__/|core/)"
+  },
+  "plugins": ["plugins/markdown"],
+  "meta": {
+    "title": "Kong Music Library App",
+    "description": "A simple music library app",
+    "keyword": "music, library"
+  },
+  "menu": {
+    "Github repo": {
+      "href": "https://github.com/ka65359/kai-kong-music-lib",
+      "target": "_blank",
+      "class": "menu-item",
+      "id": "repository"
+    }
+  },
+  "opts": {
+    "static": true,
+    "sort": true,
+    "disqus": "",
+    "search": true,
+    "collapse": true,
+    "typedefs": true,
+    "removeQuotes": "none",
+    "template": "node_modules/docdash",
+    "encoding": "utf8",
+    "destination": "docs/",
+    "recurse": true,
+    "verbose": true
+  },
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": false
+  }
+}
