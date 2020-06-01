@@ -19,7 +19,7 @@ const songDefaultState = {
   Artist: "",
   Album: "",
   Album_Link: "",
-  Genre: "",
+  Genre: { selectedItem: {} },
   Favorite: false,
   Play_Link: "",
   isValid: true,

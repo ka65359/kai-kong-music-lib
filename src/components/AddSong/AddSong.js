@@ -1,6 +1,7 @@
 import React from "react";
 import _ from "lodash";
 import Checkbox from "carbon-components-react/lib/components/Checkbox";
+import ComboBox from "carbon-components-react/lib/components/ComboBox";
 import Modal from "carbon-components-react/lib/components/Modal";
 import TextInput from "carbon-components-react/lib/components/TextInput";
 import { createSong } from "store/actions/musicLib";
@@ -26,6 +27,8 @@ const AddSongModal = ({
 
   const handleFieldChanged = (field, evt, type) => {
     if (type == "checkbox") {
+      song[field] = evt;
+    } else if (type == "dropdown") {
       song[field] = evt;
     } else {
       song[field] = evt.target.value;
@@ -134,6 +137,61 @@ const AddSongModal = ({
           helperText="A link to the album cover image"
           value={song.Album_Link}
           type="text"
+        />
+        <br />
+        <ComboBox
+          ariaLabel="Choose a genre"
+          direction="top"
+          className="kai-dropdown"
+          id="kai-genre-dropdown"
+          items={[
+            {
+              id: "alt",
+              label: "Alternative"
+            },
+            {
+              id: "country",
+              label: "Country"
+            },
+            {
+              id: "electronic",
+              label: "Electronic"
+            },
+            {
+              id: "hiphop",
+              label: "Hip Hop"
+            },
+            {
+              id: "metal",
+              label: "Metal"
+            },
+            {
+              id: "pop",
+              label: "Pop"
+            },
+            {
+              id: "punk",
+              label: "Punk"
+            },
+            {
+              id: "rb",
+              label: "R&B"
+            },
+            {
+              id: "rap",
+              label: "Rap"
+            },
+            {
+              id: "rock",
+              label: "Rock"
+            }
+          ]}
+          selectedItem={song.Genre.selectedItem}
+          onChange={(selectedItem) =>
+            handleFieldChanged("Genre", selectedItem, "dropdown")
+          }
+          placeholder="Filter..."
+          titleText="Genre"
         />
         <br />
         <TextInput
