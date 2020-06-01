@@ -7,8 +7,8 @@ import {
 } from "carbon-components-react/lib/components/UIShell";
 import WelcomeHeader from "./components/WelcomeHeader";
 import MusicLibPage from "./content/MusicLibPage";
-import Playlist32 from "@carbon/icons-react/lib/playlist/20";
 import Catalog32 from "@carbon/icons-react/lib/catalog/20";
+import FavoriteFilled32 from "@carbon/icons-react/lib/favorite--filled/20";
 import "./app.scss";
 
 class App extends Component {
@@ -28,11 +28,10 @@ class App extends Component {
               href="javascript:void(0)">
               Library
             </SideNavLink>
-            <SideNavLink renderIcon={Playlist32} href="javascript:void(0)">
-              Playlist 1
-            </SideNavLink>
-            <SideNavLink renderIcon={Playlist32} href="javascript:void(0)">
-              Playlist 2
+            <SideNavLink
+              renderIcon={FavoriteFilled32}
+              href="javascript:void(0)">
+              Favorites
             </SideNavLink>
           </SideNavItems>
         </SideNav>
