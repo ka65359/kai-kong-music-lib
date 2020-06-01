@@ -9,7 +9,8 @@ import {
   setDataFetching,
   setAllSongs,
   clearAllSongs,
-  setTableSearchStr
+  setTableSearchStr,
+  setSongUpdating
 } from "store/actions";
 import { getAllSongs, updateSong } from "store/actions/musicLib";
 import store from "../../store";
@@ -20,6 +21,7 @@ const mapDispatchToProps = {
   setAllSongs,
   clearAllSongs,
   updateSong,
+  setSongUpdating,
   setTableSearchStr
 };
 
@@ -31,6 +33,7 @@ const enhance = compose(
       searchStr: state.ui.musicLib.searchStr,
       tableSortData: state.ui.musicLib.tableSortData,
       dataFetching: state.ui.musicLib.dataFetching,
+      songUpdating: state.ui.musicLib.songUpdating,
       playlists: state.ui.musicLib.playlists
     }),
     mapDispatchToProps
@@ -62,6 +65,8 @@ export const MusicLibPage = ({
   tableSortData,
   dataFetching,
   updateSong,
+  songUpdating,
+  setSongUpdating,
   setTableSearchStr
   /* playlists,
   setAllSongs,
@@ -100,8 +105,11 @@ export const MusicLibPage = ({
   ];
 
   const toggleFavorite = (row) => {
-    row.Favorite = !row.Favorite;
-    updateSong(row);
+    if (!songUpdating.includes(row._id)) {
+      setSongUpdating(row._id);
+      row.Favorite = !row.Favorite;
+      updateSong(row);
+    }
   };
 
   const getFavButton = (row) => {

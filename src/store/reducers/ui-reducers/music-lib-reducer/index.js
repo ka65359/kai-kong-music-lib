@@ -5,6 +5,8 @@ import {
   setAllSongs,
   clearAllSongs,
   setSongData,
+  setSongUpdating,
+  clearSongUpdating,
   setTableSearchStr,
   setTableSortData,
   addSongToLibrary,
@@ -20,6 +22,7 @@ import {
 export const initialState = {
   dataFetching: false,
   songs: [],
+  songUpdating: [],
   searchStr: "",
   tableSortData: { key: "title", dir: "ASC" },
   playlists: []
@@ -46,6 +49,22 @@ export default createReducer(
       }
       let rslt = Object.assign({}, state, {
         songs: payload
+      });
+      return rslt;
+    },
+    [setSongUpdating]: (state, payload) => {
+      let final = _.cloneDeep(state.songUpdating);
+      final.push(payload);
+      let rslt = Object.assign({}, state, {
+        songUpdating: final
+      });
+      return rslt;
+    },
+    [clearSongUpdating]: (state, payload) => {
+      let final = _.cloneDeep(state.songUpdating);
+      final = final.filter((item) => item !== payload);
+      let rslt = Object.assign({}, state, {
+        songUpdating: final
       });
       return rslt;
     },
