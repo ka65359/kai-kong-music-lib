@@ -28,17 +28,61 @@ import {
   TableRow,
   TableHeader,
   TableBody,
-  TableCell
+  TableCell,
+  OverflowMenu,
+  OverflowMenuItem
 } from "carbon-components-react";
+import {
+  ChevronUp20,
+  ChevronDown20,
+  UpToTop20,
+  TrashCan20,
+  Edit20
+} from "@carbon/icons-react";
 import { setTableSortData } from "store/actions";
 import store from "../../store";
 import "./_song-table.scss";
 
 const SongTable = ({ rows, headers, onSearchUpdate }) => {
+  const moveRowUp = (row) => {
+    // Access rows update order
+    // call setAllSongs - should this be stored in DB?
+    console.debug(row);
+  };
+  const moveRowDown = (row) => {
+    // Access rows update order
+    // call setAllSongs - should this be stored in DB?
+    console.debug(row);
+  };
+  const moveToTop = (row) => {
+    // Access rows update order
+    // call setAllSongs - should this be stored in DB?
+    console.debug(row);
+  };
+  const editSong = (row) => {
+    // call updateSong
+    console.debug(row);
+  };
+  const removeSong = (row) => {
+    // call removeSongFromLibrary
+    console.debug(row);
+  };
+
+  const getMenuItemWithIcon = (icon, label, className, callBack, row) => {
+    return (
+      <span className={className} onClick={() => callBack(row)}>
+        {icon}
+        &nbsp;&nbsp;
+        {label}
+      </span>
+    );
+  };
+
   return (
     <DataTable
       rows={rows}
       headers={headers}
+      overflowMenuOnHover={false}
       isSortable
       sortRow={(a, b, { sortDirection, key }) => {
         // Don't use built in sorting, instead take the event and update sort state
@@ -90,6 +134,62 @@ const SongTable = ({ rows, headers, onSearchUpdate }) => {
                         {_.get(cell, "value.selectedItem.label", cell.value)}
                       </TableCell>
                     ))}
+                    <TableCell className="bx--table-column">
+                      <span
+                        className="kai-move-up-icon"
+                        onClick={() => moveRowUp(row)}>
+                        {<ChevronUp20 />}
+                      </span>
+                      &nbsp;&nbsp;&nbsp;
+                      <span
+                        className="kai-move-down-icon"
+                        onClick={() => moveRowDown(row)}>
+                        {<ChevronDown20 />}
+                      </span>
+                    </TableCell>
+                    <TableCell className="bx--table-column-menu">
+                      <OverflowMenu flipped className="kai-overflow-menu">
+                        <OverflowMenuItem
+                          className="some-class-kai"
+                          itemText={getMenuItemWithIcon(
+                            <UpToTop20 />,
+                            "Move to top",
+                            "kai-overflow-item-icon",
+                            moveToTop,
+                            row
+                          )}
+                          onClick={function noRefCheck() {}}
+                          onKeyDown={function noRefCheck() {}}
+                        />
+                        <OverflowMenuItem
+                          className="some-class"
+                          itemText={getMenuItemWithIcon(
+                            <Edit20 />,
+                            "Edit",
+                            "kai-overflow-item-icon",
+                            editSong,
+                            row
+                          )}
+                          onClick={function noRefCheck() {}}
+                          onKeyDown={function noRefCheck() {}}
+                        />
+                        <OverflowMenuItem
+                          className="some-class"
+                          disabled={false}
+                          hasDivider
+                          isDelete
+                          itemText={getMenuItemWithIcon(
+                            <TrashCan20 />,
+                            "Delete",
+                            "kai-overflow-item-icon",
+                            removeSong,
+                            row
+                          )}
+                          onClick={function noRefCheck() {}}
+                          onKeyDown={function noRefCheck() {}}
+                        />
+                      </OverflowMenu>
+                    </TableCell>
                   </TableRow>
                 </React.Fragment>
               ))}
