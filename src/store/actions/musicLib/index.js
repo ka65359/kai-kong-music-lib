@@ -53,11 +53,11 @@ export const createSong = (payload) => {
   JSONBody.Album = payload.Album;
   JSONBody.Genre = payload.Genre;
   // RestDB.io must not include payload fields with required regex that have no value
-  if (payload.AlbumLink) {
-    JSONBody.Album_Link = payload.AlbumLink;
+  if (payload.Album_Link) {
+    JSONBody.Album_Link = payload.Album_Link;
   }
-  if (payload.PlayLink) {
-    JSONBody.Play_Link = payload.PlayLink;
+  if (payload.Play_Link) {
+    JSONBody.Play_Link = payload.Play_Link;
   }
   JSONBody.Favorite = payload.Favorite;
   return (dispatch) => {

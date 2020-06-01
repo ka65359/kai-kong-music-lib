@@ -38,7 +38,9 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
   };
   const checkIsValid = (song) => {
     const urlRegex = new RegExp(/^(https?):\/\/[^\s$.?#].[^\s]*$/);
-    const imgRegex = new RegExp(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/);
+    const imgRegex = new RegExp(
+      /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|bmp|gif|png)/
+    );
     song.isValid = true;
     if (!song.Title) {
       song.isValid = false;
@@ -88,6 +90,7 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
           value={song.Title}
           type="text"
         />
+        <br />
         <TextInput
           className="kai-textbox"
           id="kai-add-song-artist"
@@ -99,6 +102,7 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
           value={song.Artist}
           type="text"
         />
+        <br />
         <TextInput
           className="kai-textbox"
           id="kai-add-song-album"
@@ -110,12 +114,13 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
           value={song.Album}
           type="text"
         />
+        <br />
         <TextInput
           className="kai-textbox"
           id="kai-add-song-album-link"
           invalid={!song.fieldValid.Album_Link}
-          invalidText="Please enter a valid URL"
-          labelText="Album Image Link"
+          invalidText="Please enter a valid image URL (supported: bmp, gif, jpg, jpeg, png)"
+          labelText="Album Image"
           onChange={(evt) => handleFieldChanged("Album_Link", evt)}
           onBlur={() => {
             setSong(checkIsValid(song));
@@ -125,6 +130,7 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
           value={song.Album_Link}
           type="text"
         />
+        <br />
         <TextInput
           className="kai-textbox"
           id="kai-add-song-play-link"
@@ -140,6 +146,7 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
           value={song.Play_Link}
           type="text"
         />
+        <br />
         <Checkbox
           className="kai-checkbox"
           id="kai-add-song-favorite"
@@ -148,11 +155,6 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
           checked={song.Favorite}
         />
       </div>
-      <br />
-      <br />
-      Genre Fav
-      <br />
-      <br />
     </Modal>
   );
 };
