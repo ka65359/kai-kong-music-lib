@@ -86,7 +86,9 @@ const SongTable = ({ rows, headers, onSearchUpdate }) => {
                 <React.Fragment key={row.id}>
                   <TableRow {...getRowProps({ row })}>
                     {row.cells.map((cell) => (
-                      <TableCell key={cell.id}>{cell.value}</TableCell>
+                      <TableCell key={cell.id}>
+                        {_.get(cell, "value.selectedItem.label", cell.value)}
+                      </TableCell>
                     ))}
                   </TableRow>
                 </React.Fragment>

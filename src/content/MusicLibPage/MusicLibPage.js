@@ -219,18 +219,33 @@ export const MusicLibPage = ({
       return rows;
     }
     const compare = (a, b) => {
-      a = a[key];
-      b = b[key];
+      a = _.cloneDeep(a[key]);
+      b = _.cloneDeep(b[key]);
+
+      if (typeof a === "undefined") {
+        a = "";
+      }
+      if (typeof b === "undefined") {
+        b = "";
+      }
 
       if (typeof a == "string") {
         a = a.toLowerCase();
       } else if (typeof a == "object") {
-        a = _.get(a, "props.children", "");
+        if (_.get(a, "props.children")) {
+          a = a.props.children;
+        } else if (_.get(a, "selectedItem.label")) {
+          a = a.selectedItem.label;
+        }
       }
       if (typeof b == "string") {
         b = b.toLowerCase();
       } else if (typeof b == "object") {
-        a = _.get(b, "props.children", "");
+        if (_.get(b, "props.children")) {
+          b = b.props.children;
+        } else if (_.get(b, "selectedItem.label")) {
+          b = b.selectedItem.label;
+        }
       }
       return a > b ? 1 : -1;
     };
