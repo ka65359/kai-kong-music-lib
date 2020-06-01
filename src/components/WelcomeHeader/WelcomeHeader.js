@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { compose, lifecycle, pure, withState, withHandlers } from "recompose";
+import _ from "lodash";
 import {
   Header,
   HeaderName,
@@ -16,6 +17,22 @@ import UserAvatar20 from "@carbon/icons-react/lib/user--avatar/20";
 import AddSong32 from "@carbon/icons-react/lib/add--alt/20";
 import { createSong } from "store/actions/musicLib";
 import store from "../../store";
+
+const songDefaultState = {
+  Title: "",
+  Artist: "",
+  Album: "",
+  Album_Link: "",
+  Genre: "",
+  Favorite: false,
+  Play_Link: "",
+  isValid: true,
+  fieldValid: {
+    Title: true,
+    Album_Link: true,
+    Play_Link: true
+  }
+};
 
 const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
   const handleAddSong = (setAddModalOpen, song, setSong) => {
@@ -61,7 +78,11 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
       song.fieldValid.Play_Link = true;
     }
     return song;
-  }; // TODO: CLOSE DIALOG NEEDS TO CLEAR NEW SONG DATA PREVIOUSLY ENTERED
+  };
+  const closeDialog = () => {
+    setAddModalOpen(false);
+    setSong(_.cloneDeep(songDefaultState));
+  };
   return (
     <Modal
       open={addModalOpen}
@@ -70,7 +91,9 @@ const AddSongModal = ({ addModalOpen, setAddModalOpen, song, setSong }) => {
       modalAriaLabel="Add Song to Library"
       modalLabel="Add Song"
       modalHeading="Add Song to Library"
-      onRequestClose={() => setAddModalOpen(false)}
+      onRequestClose={() => {
+        closeDialog();
+      }}
       onRequestSubmit={() => handleAddSong(setAddModalOpen, song, setSong)}
       primaryButtonText="Add"
       secondaryButtonText="Cancel">
@@ -169,17 +192,7 @@ const enhance = compose(
     shouldComponentUpdate() {}
   }),
   withState("addModalOpen", "setAddModalOpen", false),
-  withState("song", "setSong", {
-    Title: "",
-    Artist: "",
-    Album: "",
-    AlbumLink: "",
-    Genre: "",
-    Favorite: false,
-    PlayLink: "",
-    isValid: true,
-    fieldValid: {}
-  }),
+  withState("song", "setSong", _.cloneDeep(songDefaultState)),
   withHandlers({
     onsetAddModalOpen: ({ setAddModalOpen }) => (val) => {
       setAddModalOpen(() => {
