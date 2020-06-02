@@ -171,6 +171,10 @@ const SongTable = ({
     }
   };
   const removeSong = (row) => {
+    let elem = document.getElementsByClassName("kai-delete-song-modal");
+    if (elem.length) {
+      elem[0].style.top = window.scrollY - 20 + "px";
+    }
     onsetCurrentSong(row);
     onsetDelModalOpen(true);
   };

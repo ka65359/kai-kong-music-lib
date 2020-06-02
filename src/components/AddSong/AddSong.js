@@ -160,7 +160,7 @@ const AddSongModal = ({
       onRequestSubmit={() =>
         handleSubmit(setAddModalOpen, song, setSong, confirmCallback)
       }
-      primaryButtonText={isEditMode ? "Edit" : "Add"}
+      primaryButtonText={isEditMode ? "Save" : "Add"}
       secondaryButtonText="Cancel">
       <div className="kai-add-song-container">
         <TextInput
