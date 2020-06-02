@@ -40,10 +40,14 @@ import {
   Edit20
 } from "@carbon/icons-react";
 import { setTableSortData, setAllSongs } from "store/actions";
+import {
+  // updateSong,
+  deleteSong
+} from "store/actions/musicLib";
 import store from "../../store";
 import "./_song-table.scss";
 
-const SongTable = ({ rows, headers, onSearchUpdate }) => {
+const SongTable = ({ rows, headers, onSearchUpdate, songs }) => {
   const moveRowUp = (row) => {
     let index = rows.findIndex((arow) => arow._id === row.id);
     const orow = rows[index];
@@ -89,8 +93,7 @@ const SongTable = ({ rows, headers, onSearchUpdate }) => {
     console.debug(row);
   };
   const removeSong = (row) => {
-    // call removeSongFromLibrary
-    console.debug(row);
+    store.dispatch(deleteSong({ row, songs }));
   };
 
   const getMenuItemWithIcon = (icon, label, className, callBack, row) => {
@@ -213,8 +216,7 @@ const SongTable = ({ rows, headers, onSearchUpdate }) => {
                             removeSong,
                             row
                           )}
-                          onClick={function noRefCheck() {}}
-                          onKeyDown={function noRefCheck() {}}
+                          onKeyDown={() => removeSong(row)}
                         />
                       </OverflowMenu>
                     </TableCell>

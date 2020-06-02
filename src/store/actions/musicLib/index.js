@@ -34,17 +34,6 @@ export const getAllSongs = () => {
         }
       )
       .then((json) => {
-        /*
-        Playlists
-        [{
-          "_id": "5eceff709236d3040015a0d7",
-          "Name": "Monitored full-range function",
-          "ID": 3473083,
-          "_mock": true,
-          "Songs":[{"_id": "5eceff2a9236d3040015a0c5", "Title": "Et voluptatum velit", "ID": 378868,…]
-          }
-        }]
-        */
         dispatch(setDataFetching(false));
         dispatch(setAllSongs(json));
       });
@@ -131,5 +120,40 @@ export const updateSong = (payload) => {
         dispatch(clearSongUpdating(payload._id));
         dispatch(setSongData(payload));
       });
+  };
+};
+
+export const deleteSong = (payload) => {
+  return (dispatch) => {
+    return fetch(
+      "https://kaimusic-187c.restdb.io/rest/songs/" + payload.row.id,
+      {
+        method: "DELETE",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "Cache-Control": "no-cache",
+          "x-apikey": key
+        }
+      }
+    ).then(
+      (response) => {
+        if (response.ok) {
+          let index = payload.songs.findIndex(
+            (arow) => arow._id === payload.row.id
+          );
+          if (index > 0) {
+            payload.songs.splice(index, 1);
+            dispatch(setAllSongs(payload.songs));
+          }
+        }
+      },
+      (error) => {
+        if (error) {
+          console.error(error);
+          throw new Error(error);
+        }
+      }
+    );
   };
 };

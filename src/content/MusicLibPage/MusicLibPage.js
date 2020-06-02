@@ -292,6 +292,7 @@ export const MusicLibPage = ({
               firstRowIndex,
               firstRowIndex + currentPageSize
             )}
+            songs={displayedRows}
             sortKey={tableSortData.key}
             sortDir={tableSortData.sortDirection}
             onSearchUpdate={(evt) => setTableSearchStr(evt.target.value)}
