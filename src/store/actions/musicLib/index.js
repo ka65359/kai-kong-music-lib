@@ -126,7 +126,7 @@ export const updateSong = (payload) => {
 export const deleteSong = (payload) => {
   return (dispatch) => {
     return fetch(
-      "https://kaimusic-187c.restdb.io/rest/songs/" + payload.row.id,
+      "https://kaimusic-187c.restdb.io/rest/songs/" + payload.currentSong.id,
       {
         method: "DELETE",
         headers: {
@@ -140,7 +140,7 @@ export const deleteSong = (payload) => {
       (response) => {
         if (response.ok) {
           let index = payload.songs.findIndex(
-            (arow) => arow._id === payload.row.id
+            (arow) => arow._id === payload.currentSong.id
           );
           if (index > 0) {
             payload.songs.splice(index, 1);

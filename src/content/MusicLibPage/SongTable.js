@@ -42,30 +42,49 @@ import {
   TrashCan20,
   Edit20
 } from "@carbon/icons-react";
-import { setTableSortData, setAllSongs } from "store/actions";
-import {
-  // updateSong,
-  deleteSong
-} from "store/actions/musicLib";
+import { setTableSortData, setAllSongs, setSongUpdating } from "store/actions";
+import { updateSong, deleteSong } from "store/actions/musicLib";
+import AddSong from "../../components/AddSong";
+import * as constants from "../../constants/final";
 import store from "../../store";
 import "./_song-table.scss";
 
+const mapDispatchToProps = {
+  setTableSortData,
+  setAllSongs,
+  updateSong,
+  setSongUpdating,
+  deleteSong
+};
+
 const enhance = compose(
   pure,
-  connect(() => ({}), {}),
+  connect(
+    (state) => ({
+      songUpdating: state.ui.musicLib.songUpdating
+    }),
+    mapDispatchToProps
+  ),
   lifecycle({
-    componentWillMount() {},
-    componentDidMount() {},
-    componentWillUnmount() {},
-    shouldComponentUpdate(nextProps) {
-      if (this.props !== nextProps) {
-        return true;
-      }
+    shouldComponentUpdate() {
+      return true;
     }
   }),
+  withState("editModalOpen", "setEditModalOpen", false),
+  withState("editSong", "setEditSong", constants.songDefaultState),
   withState("delModalOpen", "setDelModalOpen", false),
-  withState("currSong", "setCurrentSong", {}),
+  withState("currentSong", "setCurrentSong", {}),
   withHandlers({
+    onsetEditModalOpen: ({ setEditModalOpen }) => (val) => {
+      setEditModalOpen(() => {
+        return val;
+      });
+    },
+    onsetEditSong: ({ setEditSong }) => (val) => {
+      setEditSong(() => {
+        return val;
+      });
+    },
     onsetDelModalOpen: ({ setDelModalOpen }) => (val) => {
       setDelModalOpen(() => {
         return val;
@@ -84,6 +103,16 @@ const SongTable = ({
   headers,
   onSearchUpdate,
   songs,
+  setTableSortData,
+  setAllSongs,
+  updateSong,
+  deleteSong,
+  editModalOpen,
+  onsetEditModalOpen,
+  editSong,
+  onsetEditSong,
+  songUpdating,
+  setSongUpdating,
   delModalOpen,
   onsetDelModalOpen,
   currentSong,
@@ -98,9 +127,9 @@ const SongTable = ({
       rows[newIndex] = orow;
       rows[index] = temp;
       if (_.get(store.getState(), "ui.musicLib.tableSortData.key")) {
-        store.dispatch(setTableSortData({ key: "", sortDirection: "" }));
+        setTableSortData({ key: "", sortDirection: "" });
       }
-      store.dispatch(setAllSongs(rows));
+      setAllSongs(rows);
     }
   };
   const moveRowDown = (row) => {
@@ -112,9 +141,9 @@ const SongTable = ({
       rows[newIndex] = orow;
       rows[index] = temp;
       if (_.get(store.getState(), "ui.musicLib.tableSortData.key")) {
-        store.dispatch(setTableSortData({ key: "", sortDirection: "" }));
+        setTableSortData({ key: "", sortDirection: "" });
       }
-      store.dispatch(setAllSongs(rows));
+      setAllSongs(rows);
     }
   };
   const moveToTop = (row) => {
@@ -124,14 +153,16 @@ const SongTable = ({
       rows.splice(index, 1);
       rows.unshift(temp);
       if (_.get(store.getState(), "ui.musicLib.tableSortData.key")) {
-        store.dispatch(setTableSortData({ key: "", sortDirection: "" }));
+        setTableSortData({ key: "", sortDirection: "" });
       }
-      store.dispatch(setAllSongs(rows));
+      setAllSongs(rows);
     }
   };
-  const editSong = (row) => {
-    // call updateSong
-    console.debug(row);
+  const updateSongData = (song) => {
+    if (!songUpdating.includes(song._id)) {
+      setSongUpdating(song._id);
+      updateSong(song);
+    }
   };
   const removeSong = (row) => {
     onsetCurrentSong(row);
@@ -167,7 +198,7 @@ const SongTable = ({
           closeDialog();
         }}
         onRequestSubmit={() => {
-          store.dispatch(deleteSong({ currentSong, songs }));
+          deleteSong({ currentSong, songs });
           closeDialog();
         }}
         primaryButtonText="Delete"
@@ -175,6 +206,36 @@ const SongTable = ({
         Are you sure you want to delete this song?
       </Modal>
     );
+  };
+
+  const getEditDialog = () => {
+    return (
+      <AddSong
+        isEditMode={true}
+        addModalOpen={editModalOpen}
+        setAddModalOpen={onsetEditModalOpen}
+        confirmCallback={updateSongData}
+        song={editSong}
+        setSong={onsetEditSong}
+        prefix="kai-edit"
+      />
+    );
+  };
+
+  const handleEditClicked = (row) => {
+    let index = songs.findIndex((song) => song._id === row.id);
+    if (index >= 0) {
+      editSong._id = songs[index]._id;
+      editSong.Title = songs[index].titleText;
+      editSong.Artist = songs[index].Artist;
+      editSong.Album = songs[index].Album;
+      editSong.Album_Link = songs[index].Album_Link;
+      editSong.Genre = songs[index].Genre;
+      editSong.Favorite = songs[index].favVal;
+      editSong.Play_Link = songs[index].Play_Link;
+    }
+    onsetEditSong(editSong);
+    onsetEditModalOpen(true);
   };
 
   return (
@@ -194,7 +255,7 @@ const SongTable = ({
             ) !== sortDirection ||
             _.get(store.getState(), "ui.musicLib.tableSortData.key", "") !== key
           ) {
-            store.dispatch(setTableSortData({ sortDirection, key })); // only the first time in
+            setTableSortData({ sortDirection, key }); // only the first time in
           }
         }}
         render={({
@@ -268,11 +329,10 @@ const SongTable = ({
                               <Edit20 />,
                               "Edit",
                               "kai-overflow-item-icon",
-                              editSong,
+                              handleEditClicked,
                               row
                             )}
-                            onClick={function noRefCheck() {}}
-                            onKeyDown={function noRefCheck() {}}
+                            onKeyDown={() => handleEditClicked(row)}
                           />
                           <OverflowMenuItem
                             className="some-class"
@@ -298,6 +358,7 @@ const SongTable = ({
           </TableContainer>
         )}
       />
+      {getEditDialog()}
       {getConfirmDeleteDialog()}
     </div>
   );
