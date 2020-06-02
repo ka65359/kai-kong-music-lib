@@ -39,25 +39,50 @@ import {
   TrashCan20,
   Edit20
 } from "@carbon/icons-react";
-import { setTableSortData } from "store/actions";
+import { setTableSortData, setAllSongs } from "store/actions";
 import store from "../../store";
 import "./_song-table.scss";
 
 const SongTable = ({ rows, headers, onSearchUpdate }) => {
   const moveRowUp = (row) => {
-    // Access rows update order
-    // call setAllSongs - should this be stored in DB?
-    console.debug(row);
+    let index = rows.findIndex((arow) => arow._id === row.id);
+    const orow = rows[index];
+    if (index > 0) {
+      let newIndex = index - 1;
+      const temp = rows[newIndex];
+      rows[newIndex] = orow;
+      rows[index] = temp;
+      if (_.get(store.getState(), "ui.musicLib.tableSortData.key")) {
+        store.dispatch(setTableSortData({ key: "", sortDirection: "" }));
+      }
+      store.dispatch(setAllSongs(rows));
+    }
   };
   const moveRowDown = (row) => {
-    // Access rows update order
-    // call setAllSongs - should this be stored in DB?
-    console.debug(row);
+    let index = rows.findIndex((arow) => arow._id === row.id);
+    const orow = rows[index];
+    if (index >= 0 && index < rows.length - 1) {
+      let newIndex = index + 1;
+      const temp = rows[newIndex];
+      rows[newIndex] = orow;
+      rows[index] = temp;
+      if (_.get(store.getState(), "ui.musicLib.tableSortData.key")) {
+        store.dispatch(setTableSortData({ key: "", sortDirection: "" }));
+      }
+      store.dispatch(setAllSongs(rows));
+    }
   };
   const moveToTop = (row) => {
-    // Access rows update order
-    // call setAllSongs - should this be stored in DB?
-    console.debug(row);
+    let index = rows.findIndex((arow) => arow._id === row.id);
+    if (index > 0) {
+      const temp = rows[index];
+      rows.splice(index, 1);
+      rows.unshift(temp);
+      if (_.get(store.getState(), "ui.musicLib.tableSortData.key")) {
+        store.dispatch(setTableSortData({ key: "", sortDirection: "" }));
+      }
+      store.dispatch(setAllSongs(rows));
+    }
   };
   const editSong = (row) => {
     // call updateSong
@@ -70,7 +95,9 @@ const SongTable = ({ rows, headers, onSearchUpdate }) => {
 
   const getMenuItemWithIcon = (icon, label, className, callBack, row) => {
     return (
-      <span className={className} onClick={() => callBack(row)}>
+      <span
+        className={"kai-clickable-icon " + className}
+        onClick={() => callBack(row)}>
         {icon}
         &nbsp;&nbsp;
         {label}
@@ -137,14 +164,14 @@ const SongTable = ({ rows, headers, onSearchUpdate }) => {
                     <TableCell className="bx--table-column">
                       <span
                         title="Move song up"
-                        className="kai-move-up-icon"
+                        className="kai-clickable-icon kai-move-up-icon"
                         onClick={() => moveRowUp(row)}>
                         {<ChevronUp20 />}
                       </span>
-                      &nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <span
                         title="Move song down"
-                        className="kai-move-down-icon"
+                        className="kai-clickable-icon kai-move-down-icon"
                         onClick={() => moveRowDown(row)}>
                         {<ChevronDown20 />}
                       </span>
@@ -160,8 +187,7 @@ const SongTable = ({ rows, headers, onSearchUpdate }) => {
                             moveToTop,
                             row
                           )}
-                          onClick={function noRefCheck() {}}
-                          onKeyDown={function noRefCheck() {}}
+                          onKeyDown={() => moveToTop(row)}
                         />
                         <OverflowMenuItem
                           className="some-class"

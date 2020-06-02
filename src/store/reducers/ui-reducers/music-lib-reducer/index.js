@@ -8,15 +8,7 @@ import {
   setSongUpdating,
   clearSongUpdating,
   setTableSearchStr,
-  setTableSortData,
-  addSongToLibrary,
-  removeSongFromLibrary,
-  setPlaylists,
-  clearPlaylists
-  /*addPlaylist,
-  removePlaylist,
-  addSongToPlaylist,
-  removeSongFromPlaylist*/
+  setTableSortData
 } from "store/actions";
 
 export const initialState = {
@@ -24,8 +16,7 @@ export const initialState = {
   songs: [],
   songUpdating: [],
   searchStr: "",
-  tableSortData: { key: "title", dir: "ASC" },
-  playlists: []
+  tableSortData: { key: "", sortDirection: "" }
 };
 
 export default createReducer(
@@ -87,38 +78,6 @@ export default createReducer(
     [setTableSortData]: (state, payload) => {
       let rslt = Object.assign({}, state, {
         tableSortData: payload
-      });
-      return rslt;
-    },
-    [removeSongFromLibrary]: (state, payload) => {
-      let rslt = Object.assign({}, state, {
-        songs: payload
-      });
-      return rslt;
-    },
-    [addSongToLibrary]: (state, payload) => {
-      if (!payload) {
-        console.error("New value is empty, reverting to intial");
-        payload = initialState.songs;
-      }
-      let rslt = Object.assign({}, state, {
-        songs: payload
-      });
-      return rslt;
-    },
-    [clearPlaylists]: (state) => {
-      let rslt = Object.assign({}, state, {
-        playlists: initialState.playlists
-      });
-      return rslt;
-    },
-    [setPlaylists]: (state, payload) => {
-      if (!payload) {
-        console.error("New value is empty, reverting to intial");
-        payload = initialState.playlists;
-      }
-      let rslt = Object.assign({}, state, {
-        playlists: payload
       });
       return rslt;
     }

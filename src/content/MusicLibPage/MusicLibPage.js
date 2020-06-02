@@ -127,6 +127,9 @@ export const MusicLibPage = ({
   };
 
   const getSongTitleLink = (row) => {
+    if (typeof row.Title !== "string") {
+      return row.Title;
+    }
     return (
       <a
         href={row.Play_Link}
