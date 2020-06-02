@@ -36,8 +36,7 @@ const enhance = compose(
   lifecycle({
     componentWillMount() {},
     componentDidMount() {},
-    componentWillUnmount() {},
-    shouldComponentUpdate() {}
+    componentWillUnmount() {}
   }),
   withState("addModalOpen", "setAddModalOpen", false),
   withState("song", "setSong", _.cloneDeep(songDefaultState)),

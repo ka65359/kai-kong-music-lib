@@ -16,6 +16,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 import React from "react";
+import { connect } from "react-redux";
+import { compose, lifecycle, pure, withState, withHandlers } from "recompose";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import {
@@ -30,7 +32,8 @@ import {
   TableBody,
   TableCell,
   OverflowMenu,
-  OverflowMenuItem
+  OverflowMenuItem,
+  Modal
 } from "carbon-components-react";
 import {
   ChevronUp20,
@@ -47,7 +50,45 @@ import {
 import store from "../../store";
 import "./_song-table.scss";
 
-const SongTable = ({ rows, headers, onSearchUpdate, songs }) => {
+const enhance = compose(
+  pure,
+  connect(() => ({}), {}),
+  lifecycle({
+    componentWillMount() {},
+    componentDidMount() {},
+    componentWillUnmount() {},
+    shouldComponentUpdate(nextProps) {
+      if (this.props !== nextProps) {
+        return true;
+      }
+    }
+  }),
+  withState("delModalOpen", "setDelModalOpen", false),
+  withState("currSong", "setCurrentSong", {}),
+  withHandlers({
+    onsetDelModalOpen: ({ setDelModalOpen }) => (val) => {
+      setDelModalOpen(() => {
+        return val;
+      });
+    },
+    onsetCurrentSong: ({ setCurrentSong }) => (val) => {
+      setCurrentSong(() => {
+        return val;
+      });
+    }
+  })
+);
+
+const SongTable = ({
+  rows,
+  headers,
+  onSearchUpdate,
+  songs,
+  delModalOpen,
+  onsetDelModalOpen,
+  currentSong,
+  onsetCurrentSong
+}) => {
   const moveRowUp = (row) => {
     let index = rows.findIndex((arow) => arow._id === row.id);
     const orow = rows[index];
@@ -93,7 +134,8 @@ const SongTable = ({ rows, headers, onSearchUpdate, songs }) => {
     console.debug(row);
   };
   const removeSong = (row) => {
-    store.dispatch(deleteSong({ row, songs }));
+    onsetCurrentSong(row);
+    onsetDelModalOpen(true);
   };
 
   const getMenuItemWithIcon = (icon, label, className, callBack, row) => {
@@ -108,126 +150,156 @@ const SongTable = ({ rows, headers, onSearchUpdate, songs }) => {
     );
   };
 
+  const getConfirmDeleteDialog = () => {
+    const closeDialog = () => {
+      onsetCurrentSong({});
+      onsetDelModalOpen(false);
+    };
+    return (
+      <Modal
+        open={delModalOpen}
+        className="kai-delete-song-modal"
+        iconDescription="Closed"
+        modalAriaLabel="Delete Song from Library"
+        modalLabel="Delete Song"
+        modalHeading="Delete Song from Library"
+        onRequestClose={() => {
+          closeDialog();
+        }}
+        onRequestSubmit={() => {
+          store.dispatch(deleteSong({ currentSong, songs }));
+          closeDialog();
+        }}
+        primaryButtonText="Delete"
+        secondaryButtonText="Cancel">
+        Are you sure you want to delete this song?
+      </Modal>
+    );
+  };
+
   return (
-    <DataTable
-      rows={rows}
-      headers={headers}
-      overflowMenuOnHover={false}
-      isSortable
-      sortRow={(a, b, { sortDirection, key }) => {
-        // Don't use built in sorting, instead take the event and update sort state
-        if (
-          _.get(
-            store.getState(),
-            "ui.musicLib.tableSortData.sortDirection",
-            ""
-          ) !== sortDirection ||
-          _.get(store.getState(), "ui.musicLib.tableSortData.key", "") !== key
-        ) {
-          store.dispatch(setTableSortData({ sortDirection, key })); // only the first time in
-        }
-      }}
-      render={({
-        rows,
-        headers,
-        getHeaderProps,
-        getRowProps,
-        getTableProps
-      }) => (
-        <TableContainer
-          title="My Music Library"
-          description="A collection of music">
-          <TableToolbar>
-            <TableToolbarSearch
-              onChange={onSearchUpdate}
-              placeHolderText="Search title, artist, or album"
-            />
-          </TableToolbar>
-          <Table {...getTableProps()}>
-            <TableHead>
-              <TableRow>
-                {headers.map((header) => (
-                  <TableHeader
-                    key={header.header}
-                    {...getHeaderProps({ header })}>
-                    {header.header}
-                  </TableHeader>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <React.Fragment key={row.id}>
-                  <TableRow {...getRowProps({ row })}>
-                    {row.cells.map((cell) => (
-                      <TableCell key={cell.id}>
-                        {_.get(cell, "value.selectedItem.label", cell.value)}
+    <div>
+      <DataTable
+        rows={rows}
+        headers={headers}
+        overflowMenuOnHover={false}
+        isSortable
+        sortRow={(a, b, { sortDirection, key }) => {
+          // Don't use built in sorting, instead take the event and update sort state
+          if (
+            _.get(
+              store.getState(),
+              "ui.musicLib.tableSortData.sortDirection",
+              ""
+            ) !== sortDirection ||
+            _.get(store.getState(), "ui.musicLib.tableSortData.key", "") !== key
+          ) {
+            store.dispatch(setTableSortData({ sortDirection, key })); // only the first time in
+          }
+        }}
+        render={({
+          rows,
+          headers,
+          getHeaderProps,
+          getRowProps,
+          getTableProps
+        }) => (
+          <TableContainer
+            title="My Music Library"
+            description="A collection of music">
+            <TableToolbar>
+              <TableToolbarSearch
+                onChange={onSearchUpdate}
+                placeHolderText="Search title, artist, or album"
+              />
+            </TableToolbar>
+            <Table {...getTableProps()}>
+              <TableHead>
+                <TableRow>
+                  {headers.map((header) => (
+                    <TableHeader
+                      key={header.header}
+                      {...getHeaderProps({ header })}>
+                      {header.header}
+                    </TableHeader>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <React.Fragment key={row.id}>
+                    <TableRow {...getRowProps({ row })}>
+                      {row.cells.map((cell) => (
+                        <TableCell key={cell.id}>
+                          {_.get(cell, "value.selectedItem.label", cell.value)}
+                        </TableCell>
+                      ))}
+                      <TableCell className="bx--table-column">
+                        <span
+                          title="Move song up"
+                          className="kai-clickable-icon kai-move-up-icon"
+                          onClick={() => moveRowUp(row)}>
+                          {<ChevronUp20 />}
+                        </span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span
+                          title="Move song down"
+                          className="kai-clickable-icon kai-move-down-icon"
+                          onClick={() => moveRowDown(row)}>
+                          {<ChevronDown20 />}
+                        </span>
                       </TableCell>
-                    ))}
-                    <TableCell className="bx--table-column">
-                      <span
-                        title="Move song up"
-                        className="kai-clickable-icon kai-move-up-icon"
-                        onClick={() => moveRowUp(row)}>
-                        {<ChevronUp20 />}
-                      </span>
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <span
-                        title="Move song down"
-                        className="kai-clickable-icon kai-move-down-icon"
-                        onClick={() => moveRowDown(row)}>
-                        {<ChevronDown20 />}
-                      </span>
-                    </TableCell>
-                    <TableCell className="bx--table-column-menu">
-                      <OverflowMenu flipped className="kai-overflow-menu">
-                        <OverflowMenuItem
-                          className="some-class-kai"
-                          itemText={getMenuItemWithIcon(
-                            <UpToTop20 />,
-                            "Move to top",
-                            "kai-overflow-item-icon",
-                            moveToTop,
-                            row
-                          )}
-                          onKeyDown={() => moveToTop(row)}
-                        />
-                        <OverflowMenuItem
-                          className="some-class"
-                          itemText={getMenuItemWithIcon(
-                            <Edit20 />,
-                            "Edit",
-                            "kai-overflow-item-icon",
-                            editSong,
-                            row
-                          )}
-                          onClick={function noRefCheck() {}}
-                          onKeyDown={function noRefCheck() {}}
-                        />
-                        <OverflowMenuItem
-                          className="some-class"
-                          disabled={false}
-                          hasDivider
-                          isDelete
-                          itemText={getMenuItemWithIcon(
-                            <TrashCan20 />,
-                            "Delete",
-                            "kai-overflow-item-icon",
-                            removeSong,
-                            row
-                          )}
-                          onKeyDown={() => removeSong(row)}
-                        />
-                      </OverflowMenu>
-                    </TableCell>
-                  </TableRow>
-                </React.Fragment>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
-    />
+                      <TableCell className="bx--table-column-menu">
+                        <OverflowMenu flipped className="kai-overflow-menu">
+                          <OverflowMenuItem
+                            className="some-class-kai"
+                            itemText={getMenuItemWithIcon(
+                              <UpToTop20 />,
+                              "Move to top",
+                              "kai-overflow-item-icon",
+                              moveToTop,
+                              row
+                            )}
+                            onKeyDown={() => moveToTop(row)}
+                          />
+                          <OverflowMenuItem
+                            className="some-class"
+                            itemText={getMenuItemWithIcon(
+                              <Edit20 />,
+                              "Edit",
+                              "kai-overflow-item-icon",
+                              editSong,
+                              row
+                            )}
+                            onClick={function noRefCheck() {}}
+                            onKeyDown={function noRefCheck() {}}
+                          />
+                          <OverflowMenuItem
+                            className="some-class"
+                            disabled={false}
+                            hasDivider
+                            isDelete
+                            itemText={getMenuItemWithIcon(
+                              <TrashCan20 />,
+                              "Delete",
+                              "kai-overflow-item-icon",
+                              removeSong,
+                              row
+                            )}
+                            onKeyDown={() => removeSong(row)}
+                          />
+                        </OverflowMenu>
+                      </TableCell>
+                    </TableRow>
+                  </React.Fragment>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      />
+      {getConfirmDeleteDialog()}
+    </div>
   );
 };
 
@@ -237,4 +309,4 @@ SongTable.propTypes = {
   onSearchUpdate: PropTypes.func.isRequired
 };
 
-export default SongTable;
+export default enhance(SongTable);
