@@ -45,7 +45,7 @@ import {
 import { setTableSortData, setAllSongs, setSongUpdating } from "store/actions";
 import { updateSong, deleteSong } from "store/actions/musicLib";
 import AddSong from "../../components/AddSong";
-import * as constants from "../../constants/final";
+import * as constants from "../../constants/musicLib";
 import store from "../../store";
 import "./_song-table.scss";
 
@@ -169,11 +169,9 @@ const SongTable = ({
     onsetDelModalOpen(true);
   };
 
-  const getMenuItemWithIcon = (icon, label, className, callBack, row) => {
+  const getMenuItemWithIcon = (icon, label, className) => {
     return (
-      <span
-        className={"kai-clickable-icon " + className}
-        onClick={() => callBack(row)}>
+      <span className={"kai-clickable-icon " + className}>
         {icon}
         &nbsp;&nbsp;
         {label}
@@ -317,10 +315,9 @@ const SongTable = ({
                             itemText={getMenuItemWithIcon(
                               <UpToTop20 />,
                               "Move to top",
-                              "kai-overflow-item-icon",
-                              moveToTop,
-                              row
+                              "kai-overflow-item-icon"
                             )}
+                            onClick={() => moveToTop(row)}
                             onKeyDown={() => moveToTop(row)}
                           />
                           <OverflowMenuItem
@@ -328,10 +325,9 @@ const SongTable = ({
                             itemText={getMenuItemWithIcon(
                               <Edit20 />,
                               "Edit",
-                              "kai-overflow-item-icon",
-                              handleEditClicked,
-                              row
+                              "kai-overflow-item-icon"
                             )}
+                            onClick={() => handleEditClicked(row)}
                             onKeyDown={() => handleEditClicked(row)}
                           />
                           <OverflowMenuItem
@@ -342,10 +338,9 @@ const SongTable = ({
                             itemText={getMenuItemWithIcon(
                               <TrashCan20 />,
                               "Delete",
-                              "kai-overflow-item-icon",
-                              removeSong,
-                              row
+                              "kai-overflow-item-icon"
                             )}
+                            onClick={() => removeSong(row)}
                             onKeyDown={() => removeSong(row)}
                           />
                         </OverflowMenu>

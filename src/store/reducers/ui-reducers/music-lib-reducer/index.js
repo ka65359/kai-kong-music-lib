@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { createReducer } from "redux-act";
 import {
   setDataFetching,
@@ -44,7 +43,7 @@ export default createReducer(
       return rslt;
     },
     [setSongUpdating]: (state, payload) => {
-      let final = _.cloneDeep(state.songUpdating);
+      let final = Array.from(state.songUpdating);
       final.push(payload);
       let rslt = Object.assign({}, state, {
         songUpdating: final
@@ -52,7 +51,7 @@ export default createReducer(
       return rslt;
     },
     [clearSongUpdating]: (state, payload) => {
-      let final = _.cloneDeep(state.songUpdating);
+      let final = Array.from(state.songUpdating);
       final = final.filter((item) => item !== payload);
       let rslt = Object.assign({}, state, {
         songUpdating: final
@@ -60,7 +59,7 @@ export default createReducer(
       return rslt;
     },
     [setSongData]: (state, payload) => {
-      let songs = _.cloneDeep(state.songs);
+      let songs = Array.from(state.songs);
       let index = songs.findIndex((song) => song._id === payload._id);
       songs[index] = payload;
       let rslt = Object.assign({}, state, {

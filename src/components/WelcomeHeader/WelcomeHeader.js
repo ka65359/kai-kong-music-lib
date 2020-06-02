@@ -12,7 +12,7 @@ import {
 import UserAvatar20 from "@carbon/icons-react/lib/user--avatar/20";
 import AddSong32 from "@carbon/icons-react/lib/add--alt/20";
 import AddSong from "../AddSong";
-import * as constants from "../../constants/final";
+import * as constants from "../../constants/musicLib";
 
 const enhance = compose(
   pure,
