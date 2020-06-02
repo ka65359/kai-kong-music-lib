@@ -1,5 +1,6 @@
 import { createAction } from "redux-act";
 
+export const setCurrentPage = createAction("Set the current page");
 export const setDataFetching = createAction(
   "Flag for if data is being fetched"
 );

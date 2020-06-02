@@ -1,5 +1,6 @@
 import { createReducer } from "redux-act";
 import {
+  setCurrentPage,
   setDataFetching,
   setAllSongs,
   clearAllSongs,
@@ -11,6 +12,7 @@ import {
 } from "store/actions";
 
 export const initialState = {
+  currentPage: "library",
   dataFetching: false,
   songs: [],
   songUpdating: [],
@@ -20,6 +22,33 @@ export const initialState = {
 
 export default createReducer(
   {
+    [setCurrentPage]: (state, payload) => {
+      let libElem = document.getElementsByClassName(
+        window.kaiAppData.libraryLinkName
+      );
+      let favElem = document.getElementsByClassName(
+        window.kaiAppData.favoritesLinkName
+      );
+      if (payload == "library") {
+        if (libElem.length) {
+          libElem[0].ariaCurrent = "page";
+        }
+        if (favElem.length) {
+          favElem[0].ariaCurrent = "";
+        }
+      } else if (payload == "favorites") {
+        if (libElem.length) {
+          libElem[0].ariaCurrent = "";
+        }
+        if (favElem.length) {
+          favElem[0].ariaCurrent = "page";
+        }
+      }
+      let rslt = Object.assign({}, state, {
+        currentPage: payload
+      });
+      return rslt;
+    },
     [setDataFetching]: (state, payload) => {
       let rslt = Object.assign({}, state, {
         dataFetching: payload
