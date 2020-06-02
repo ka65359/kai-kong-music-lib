@@ -29,6 +29,7 @@ const enhance = compose(
   pure,
   connect(
     (state) => ({
+      currentPage: state.ui.musicLib.currentPage,
       songs: state.ui.musicLib.songs,
       searchStr: state.ui.musicLib.searchStr,
       tableSortData: state.ui.musicLib.tableSortData,
@@ -40,8 +41,6 @@ const enhance = compose(
   ),
   lifecycle({
     UNSAFE_componentWillMount() {
-      // subscribe to eventlisteners
-      //window.addEventListener("click", onClickHandler);
       // populate song data
       store.dispatch(setDataFetching(true));
       store.dispatch(getAllSongs());
@@ -60,6 +59,7 @@ const enhance = compose(
 );
 
 export const MusicLibPage = ({
+  currentPage,
   songs,
   searchStr,
   tableSortData,
@@ -294,9 +294,13 @@ export const MusicLibPage = ({
   };
 
   let displayedRows = rows;
+  if (currentPage == "favorites") {
+    displayedRows = rows.filter((arow) => arow.favVal === true);
+  }
+
   if (tableSortData.key) {
     displayedRows = sortSongs(
-      rows,
+      displayedRows,
       tableSortData.sortDirection,
       tableSortData.key
     );

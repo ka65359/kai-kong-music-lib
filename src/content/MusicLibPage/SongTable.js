@@ -244,11 +244,12 @@ const SongTable = ({
 
   // This is necessary so we can manually clear the sort header when user moves a song
   if (_.get(window, "kaiAppData.songTableRef")) {
-    delete window.kaiAppData;
+    delete window.kaiAppData.songTableRef;
   }
-  window.kaiAppData = {
-    songTableRef: React.createRef()
-  };
+  if (!window.kaiAppData) {
+    window.kaiAppData = {};
+  }
+  window.kaiAppData.songTableRef = React.createRef();
   return (
     <div>
       <DataTable
