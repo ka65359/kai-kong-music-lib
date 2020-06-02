@@ -61,9 +61,8 @@ export default createReducer(
     },
     [setSongData]: (state, payload) => {
       let songs = _.cloneDeep(state.songs);
-      songs.map((song) => {
-        return song._id !== payload._id ? song : payload;
-      });
+      let index = songs.findIndex((song) => song._id === payload._id);
+      songs[index] = payload;
       let rslt = Object.assign({}, state, {
         songs: songs
       });
