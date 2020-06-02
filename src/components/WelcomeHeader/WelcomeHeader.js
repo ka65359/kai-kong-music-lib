@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { compose, lifecycle, pure, withState, withHandlers } from "recompose";
+import _ from "lodash";
 import {
   Header,
   HeaderName,
@@ -23,7 +24,7 @@ const enhance = compose(
     componentWillUnmount() {}
   }),
   withState("addModalOpen", "setAddModalOpen", false),
-  withState("song", "setSong", constants.songDefaultState),
+  withState("song", "setSong", _.cloneDeep(constants.songDefaultState)),
   withHandlers({
     onsetAddModalOpen: ({ setAddModalOpen }) => (val) => {
       setAddModalOpen(() => {
@@ -67,7 +68,6 @@ const WelcomeHeader = ({
         setAddModalOpen={onsetAddModalOpen}
         song={song}
         setSong={onsetSong}
-        songDefaultState={constants.songDefaultState}
         prefix="kai-add"
       />
     </div>

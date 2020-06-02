@@ -71,7 +71,7 @@ const enhance = compose(
     }
   }),
   withState("editModalOpen", "setEditModalOpen", false),
-  withState("editSong", "setEditSong", constants.songDefaultState),
+  withState("editSong", "setEditSong", _.cloneDeep(constants.songDefaultState)),
   withState("delModalOpen", "setDelModalOpen", false),
   withState("currentSong", "setCurrentSong", {}),
   withHandlers({

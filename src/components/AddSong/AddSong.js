@@ -7,7 +7,6 @@ import TextInput from "carbon-components-react/lib/components/TextInput";
 import { createSong } from "store/actions/musicLib";
 import store from "../../store";
 import * as constants from "../../constants/musicLib";
-
 /**
  * [AddSongModal description]
  *
@@ -85,8 +84,8 @@ const AddSongModal = ({
   };
 
   const closeDialog = () => {
+    setSong(_.cloneDeep(constants.songDefaultState));
     setAddModalOpen(false);
-    setSong(constants.songDefaultState);
   };
 
   const handleSubmit = (setAddModalOpen, song, setSong, confirmCallback) => {
@@ -95,6 +94,7 @@ const AddSongModal = ({
       confirmCallback(song);
     } else {
       store.dispatch(createSong(song));
+      setSong(_.cloneDeep(constants.songDefaultState));
     }
   };
 
