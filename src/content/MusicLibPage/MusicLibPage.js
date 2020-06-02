@@ -170,11 +170,12 @@ export const MusicLibPage = ({
       ...row,
       id: row._id,
       key: row._id,
+      titleText: _.cloneDeep(row.Title),
       Title: row.Play_Link ? getSongTitleLink(row) : row.Title,
-      titleText: row.Title,
       Artist: row.Artist,
       Album: row.Album,
       Genre: row.Genre,
+      favVal: _.cloneDeep(row.Favorite),
       Favorite: getFavButton(row),
       AlbumImage: getAlbumImage(row)
     }));
