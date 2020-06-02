@@ -277,6 +277,9 @@ export const MusicLibPage = ({
       }
       return a > b ? 1 : -1;
     };
+    if (key === "Title") {
+      key = "titleText";
+    }
     let sortedRows;
     if (sortDirection !== "DESC") {
       sortedRows = rows.sort((a, b) => {
