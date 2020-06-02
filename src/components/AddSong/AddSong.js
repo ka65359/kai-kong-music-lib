@@ -6,7 +6,7 @@ import Modal from "carbon-components-react/lib/components/Modal";
 import TextInput from "carbon-components-react/lib/components/TextInput";
 import { createSong } from "store/actions/musicLib";
 import store from "../../store";
-import * as constants from "../../constants/final";
+import * as constants from "../../constants/musicLib";
 
 /**
  * [AddSongModal description]
@@ -43,10 +43,16 @@ const AddSongModal = ({
   const handleFieldChanged = (field, evt, type) => {
     if (type == "checkbox") {
       song[field] = evt;
+      if (field == "Favorite") {
+        song.favVal = evt;
+      }
     } else if (type == "dropdown") {
       song[field] = evt;
     } else {
       song[field] = evt.target.value;
+      if (field === "Title") {
+        song.titleText = evt.target.value;
+      }
     }
     setSong(song);
   };

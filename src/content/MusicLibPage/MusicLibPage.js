@@ -68,9 +68,6 @@ export const MusicLibPage = ({
   songUpdating,
   setSongUpdating,
   setTableSearchStr
-  /* playlists,
-  setAllSongs,
-  clearAllSongs*/
 }) => {
   const [firstRowIndex, setFirstRowIndex] = useState(0);
   const [currentPageSize, setCurrentPageSize] = useState(10);
@@ -108,6 +105,7 @@ export const MusicLibPage = ({
     if (!songUpdating.includes(row._id)) {
       setSongUpdating(row._id);
       row.Favorite = !row.Favorite;
+      row.favVal = row.Favorite;
       updateSong(row);
     }
   };
@@ -165,17 +163,39 @@ export const MusicLibPage = ({
     return <div></div>;
   };
 
+  const getTitleText = (row) => {
+    // issues with reference passing
+    if (typeof row.titleText === "string") {
+      return "" + row.titleText;
+    }
+    if (typeof row.Title === "string") {
+      return "" + row.Title;
+    }
+    return "";
+  };
+
+  const getFavValue = (row) => {
+    // issues with reference passing
+    if (typeof row.favVal === "boolean") {
+      return row.favVal === true ? true : false;
+    }
+    if (typeof row.Favorite === "boolean") {
+      return row.Favorite === true ? true : false;
+    }
+    return false;
+  };
+
   const getRowItems = (rows) =>
     rows.map((row) => ({
       ...row,
       id: row._id,
       key: row._id,
-      titleText: _.cloneDeep(row.Title),
+      titleText: getTitleText(row),
       Title: row.Play_Link ? getSongTitleLink(row) : row.Title,
       Artist: row.Artist,
       Album: row.Album,
       Genre: row.Genre,
-      favVal: _.cloneDeep(row.Favorite),
+      favVal: getFavValue(row),
       Favorite: getFavButton(row),
       AlbumImage: getAlbumImage(row)
     }));
