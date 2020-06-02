@@ -74,7 +74,7 @@ const WelcomeHeader = ({
             onClick={() => onsetAddModalOpen(true)}>
             <AddSong32 />
           </HeaderGlobalAction>
-          <HeaderGlobalAction aria-label="User Avatar" title="User Avatar">
+          <HeaderGlobalAction aria-label="User Actions" title="User Actions">
             <UserAvatar20 />
           </HeaderGlobalAction>
         </HeaderGlobalBar>

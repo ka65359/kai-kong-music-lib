@@ -117,7 +117,10 @@ export const MusicLibPage = ({
     let classStr = "kai-fav-icon kai-fav-" + row._id;
 
     return (
-      <div className={classStr} onClick={() => toggleFavorite(row)}>
+      <div
+        className={classStr}
+        title="Toggle favorite"
+        onClick={() => toggleFavorite(row)}>
         {icon}
       </div>
     );
@@ -127,6 +130,7 @@ export const MusicLibPage = ({
     return (
       <a
         href={row.Play_Link}
+        className="kai-title-link"
         title="Play Song"
         rel="external noopener noreferrer"
         target="_blank">

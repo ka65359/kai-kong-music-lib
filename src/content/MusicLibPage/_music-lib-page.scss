@@ -5,6 +5,10 @@
   padding-bottom: $spacing-05;
 }
 
+.kai-fav-icon {
+  cursor: pointer;
+}
+
 .kai-fav-icon > svg {
   fill: #da1e28;
 }
@@ -12,4 +16,10 @@
 .kai-table-album-img-link {
   height: 75px;
   width: 75px;
+}
+
+.kai-title-link {
+  color: #78a9ff;
+  text-decoration: unset;
+  font-weight: 550;
 }

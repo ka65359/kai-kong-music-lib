@@ -106,7 +106,7 @@ const SongTable = ({ rows, headers, onSearchUpdate }) => {
       }) => (
         <TableContainer
           title="My Music Library"
-          description="A collection of music.">
+          description="A collection of music">
           <TableToolbar>
             <TableToolbarSearch
               onChange={onSearchUpdate}
@@ -136,12 +136,14 @@ const SongTable = ({ rows, headers, onSearchUpdate }) => {
                     ))}
                     <TableCell className="bx--table-column">
                       <span
+                        title="Move song up"
                         className="kai-move-up-icon"
                         onClick={() => moveRowUp(row)}>
                         {<ChevronUp20 />}
                       </span>
                       &nbsp;&nbsp;&nbsp;
                       <span
+                        title="Move song down"
                         className="kai-move-down-icon"
                         onClick={() => moveRowDown(row)}>
                         {<ChevronDown20 />}
