@@ -127,6 +127,8 @@ const SongTable = ({
       rows[newIndex] = orow;
       rows[index] = temp;
       if (_.get(store.getState(), "ui.musicLib.tableSortData.key")) {
+        // TODO: This is nasty, need to find a better way to clear sort manually
+        window.kaiAppData.songTableRef.current.state.sortHeaderKey = null;
         setTableSortData({ key: "", sortDirection: "" });
       }
       setAllSongs(rows);
@@ -141,6 +143,8 @@ const SongTable = ({
       rows[newIndex] = orow;
       rows[index] = temp;
       if (_.get(store.getState(), "ui.musicLib.tableSortData.key")) {
+        // TODO: This is nasty, need to find a better way to clear sort manually
+        window.kaiAppData.songTableRef.current.state.sortHeaderKey = null;
         setTableSortData({ key: "", sortDirection: "" });
       }
       setAllSongs(rows);
@@ -153,6 +157,8 @@ const SongTable = ({
       rows.splice(index, 1);
       rows.unshift(temp);
       if (_.get(store.getState(), "ui.musicLib.tableSortData.key")) {
+        // TODO: This is nasty, need to find a better way to clear sort manually
+        window.kaiAppData.songTableRef.current.state.sortHeaderKey = null;
         setTableSortData({ key: "", sortDirection: "" });
       }
       setAllSongs(rows);
@@ -236,9 +242,17 @@ const SongTable = ({
     onsetEditModalOpen(true);
   };
 
+  // This is necessary so we can manually clear the sort header when user moves a song
+  if (_.get(window, "kaiAppData.songTableRef")) {
+    delete window.kaiAppData;
+  }
+  window.kaiAppData = {
+    songTableRef: React.createRef()
+  };
   return (
     <div>
       <DataTable
+        ref={window.kaiAppData.songTableRef}
         rows={rows}
         headers={headers}
         overflowMenuOnHover={false}
