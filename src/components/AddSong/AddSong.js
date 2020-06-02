@@ -6,22 +6,37 @@ import Modal from "carbon-components-react/lib/components/Modal";
 import TextInput from "carbon-components-react/lib/components/TextInput";
 import { createSong } from "store/actions/musicLib";
 import store from "../../store";
+import * as constants from "../../constants/final";
 
+/**
+ * [AddSongModal description]
+ *
+ * @method AddSongModal
+ *
+ * @param  {[type]}     addModalOpen    [description]
+ * @param  {String}     prefix          [namespace to make ids unique] - required!
+ * @param  {[type]}     setAddModalOpen [description]
+ * @param  {[type]}     song            [description]
+ * @param  {[type]}     setSong         [description]
+ * @param  {Boolean}    isEditMode      Whether or not the dialog is in edit mode
+ * @param  {[type]}     confirmCallback [description] - should take song
+ */
 const AddSongModal = ({
   addModalOpen,
+  prefix,
   setAddModalOpen,
   song,
   setSong,
-  songDefaultState
+  isEditMode,
+  confirmCallback
 }) => {
-  const handleAddSong = (setAddModalOpen, song, setSong) => {
+  const validateSongData = (setAddModalOpen, song, setSong) => {
     song = checkIsValid(song);
     if (!song.isValid) {
       setSong(song);
     } else {
       setAddModalOpen(false);
       setSong(song);
-      store.dispatch(createSong(song));
     }
   };
 
@@ -65,27 +80,86 @@ const AddSongModal = ({
 
   const closeDialog = () => {
     setAddModalOpen(false);
-    setSong(_.cloneDeep(songDefaultState));
+    setSong(constants.songDefaultState);
+  };
+
+  const handleSubmit = (setAddModalOpen, song, setSong, confirmCallback) => {
+    validateSongData(setAddModalOpen, song, setSong);
+    if (typeof confirmCallback === "function") {
+      confirmCallback(song);
+    } else {
+      store.dispatch(createSong(song));
+    }
+  };
+
+  const genreOptions = [
+    {
+      id: "alt",
+      label: "Alternative"
+    },
+    {
+      id: "country",
+      label: "Country"
+    },
+    {
+      id: "electronic",
+      label: "Electronic"
+    },
+    {
+      id: "hiphop",
+      label: "Hip Hop"
+    },
+    {
+      id: "metal",
+      label: "Metal"
+    },
+    {
+      id: "pop",
+      label: "Pop"
+    },
+    {
+      id: "punk",
+      label: "Punk"
+    },
+    {
+      id: "rb",
+      label: "R&B"
+    },
+    {
+      id: "rap",
+      label: "Rap"
+    },
+    {
+      id: "rock",
+      label: "Rock"
+    }
+  ];
+
+  const getGenreOption = (label) => {
+    let arr = genreOptions.filter((item) => item.label == label);
+    return arr.length ? arr[0] : {};
   };
 
   return (
     <Modal
       open={addModalOpen}
-      className="kai-add-song-modal"
+      className={isEditMode ? "kai-edit-song-modal" : "kai-add-song-modal"}
       iconDescription="Closed"
-      modalAriaLabel="Add Song to Library"
-      modalLabel="Add Song"
-      modalHeading="Add Song to Library"
+      modalAriaLabel={isEditMode ? "Edit current song" : "Add song to library"}
+      modalLabel={isEditMode ? "Edit Song" : "Add Song"}
+      modalHeading={isEditMode ? "Edit current song" : "Add song to library"}
       onRequestClose={() => {
         closeDialog();
       }}
-      onRequestSubmit={() => handleAddSong(setAddModalOpen, song, setSong)}
-      primaryButtonText="Add"
+      onRequestSubmit={() =>
+        handleSubmit(setAddModalOpen, song, setSong, confirmCallback)
+      }
+      primaryButtonText={isEditMode ? "Edit" : "Add"}
       secondaryButtonText="Cancel">
       <div className="kai-add-song-container">
         <TextInput
           className="kai-textbox"
-          id="kai-add-song-title"
+          id={prefix + "kai-add-song-title"}
           invalid={!song.fieldValid.Title}
           invalidText="This field is required"
           labelText=<span>
@@ -101,7 +175,7 @@ const AddSongModal = ({
         <br />
         <TextInput
           className="kai-textbox"
-          id="kai-add-song-artist"
+          id={prefix + "kai-add-song-artist"}
           labelText="Artist"
           onChange={(evt) => handleFieldChanged("Artist", evt)}
           onBlur={() => {
@@ -113,7 +187,7 @@ const AddSongModal = ({
         <br />
         <TextInput
           className="kai-textbox"
-          id="kai-add-song-album"
+          id={prefix + "kai-add-song-album"}
           labelText="Album"
           onChange={(evt) => handleFieldChanged("Album", evt)}
           onBlur={() => {
@@ -125,7 +199,7 @@ const AddSongModal = ({
         <br />
         <TextInput
           className="kai-textbox"
-          id="kai-add-song-album-link"
+          id={prefix + "kai-add-song-album-link"}
           invalid={!song.fieldValid.Album_Link}
           invalidText="Please enter a valid image URL (supported: bmp, gif, jpg, jpeg, png)"
           labelText="Album Image"
@@ -143,50 +217,13 @@ const AddSongModal = ({
           ariaLabel="Choose a genre"
           direction="top"
           className="kai-dropdown"
-          id="kai-genre-dropdown"
-          items={[
-            {
-              id: "alt",
-              label: "Alternative"
-            },
-            {
-              id: "country",
-              label: "Country"
-            },
-            {
-              id: "electronic",
-              label: "Electronic"
-            },
-            {
-              id: "hiphop",
-              label: "Hip Hop"
-            },
-            {
-              id: "metal",
-              label: "Metal"
-            },
-            {
-              id: "pop",
-              label: "Pop"
-            },
-            {
-              id: "punk",
-              label: "Punk"
-            },
-            {
-              id: "rb",
-              label: "R&B"
-            },
-            {
-              id: "rap",
-              label: "Rap"
-            },
-            {
-              id: "rock",
-              label: "Rock"
-            }
-          ]}
-          selectedItem={song.Genre.selectedItem}
+          id={prefix + "kai-genre-dropdown"}
+          items={genreOptions}
+          selectedItem={
+            isEditMode && typeof song.Genre == "string"
+              ? getGenreOption(song.Genre)
+              : _.get(song, "Genre.selectedItem", {})
+          }
           onChange={(selectedItem) =>
             handleFieldChanged("Genre", selectedItem, "dropdown")
           }
@@ -196,7 +233,7 @@ const AddSongModal = ({
         <br />
         <TextInput
           className="kai-textbox"
-          id="kai-add-song-play-link"
+          id={prefix + "kai-add-song-play-link"}
           invalid={!song.fieldValid.Play_Link}
           invalidText="Please enter a valid URL"
           labelText="Play Link"
@@ -212,7 +249,7 @@ const AddSongModal = ({
         <br />
         <Checkbox
           className="kai-checkbox"
-          id="kai-add-song-favorite"
+          id={prefix + "kai-add-song-favorite"}
           labelText="Favorite"
           onChange={(evt) => handleFieldChanged("Favorite", evt, "checkbox")}
           checked={song.Favorite}

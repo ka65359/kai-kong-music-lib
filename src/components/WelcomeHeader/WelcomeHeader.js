@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { compose, lifecycle, pure, withState, withHandlers } from "recompose";
-import _ from "lodash";
 import {
   Header,
   HeaderName,
@@ -13,22 +12,7 @@ import {
 import UserAvatar20 from "@carbon/icons-react/lib/user--avatar/20";
 import AddSong32 from "@carbon/icons-react/lib/add--alt/20";
 import AddSong from "../AddSong";
-
-const songDefaultState = {
-  Title: "",
-  Artist: "",
-  Album: "",
-  Album_Link: "",
-  Genre: { selectedItem: {} },
-  Favorite: false,
-  Play_Link: "",
-  isValid: true,
-  fieldValid: {
-    Title: true,
-    Album_Link: true,
-    Play_Link: true
-  }
-};
+import * as constants from "../../constants/final";
 
 const enhance = compose(
   pure,
@@ -39,7 +23,7 @@ const enhance = compose(
     componentWillUnmount() {}
   }),
   withState("addModalOpen", "setAddModalOpen", false),
-  withState("song", "setSong", _.cloneDeep(songDefaultState)),
+  withState("song", "setSong", constants.songDefaultState),
   withHandlers({
     onsetAddModalOpen: ({ setAddModalOpen }) => (val) => {
       setAddModalOpen(() => {
@@ -83,7 +67,8 @@ const WelcomeHeader = ({
         setAddModalOpen={onsetAddModalOpen}
         song={song}
         setSong={onsetSong}
-        songDefaultState={songDefaultState}
+        songDefaultState={constants.songDefaultState}
+        prefix="kai-add"
       />
     </div>
   );
