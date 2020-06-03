@@ -98,6 +98,28 @@ export const MusicLibPage = ({
     }
   ];
 
+  const getTitleText = (row) => {
+    // issues with reference passing
+    if (typeof row.titleText === "string") {
+      return "" + row.titleText;
+    }
+    if (typeof row.Title === "string") {
+      return "" + row.Title;
+    }
+    return "";
+  };
+
+  const getFavValue = (row) => {
+    // issues with reference passing
+    if (typeof row.favVal === "boolean") {
+      return row.favVal === true ? true : false;
+    }
+    if (typeof row.Favorite === "boolean") {
+      return row.Favorite === true ? true : false;
+    }
+    return false;
+  };
+
   const toggleFavorite = (row) => {
     if (!songUpdating.includes(row._id)) {
       setSongUpdating(row._id);
@@ -108,7 +130,7 @@ export const MusicLibPage = ({
   };
 
   const getFavButton = (row) => {
-    let icon = row.favVal ? <FavoriteFilled32 /> : <Favorite32 />;
+    let icon = getFavValue(row) ? <FavoriteFilled32 /> : <Favorite32 />;
     let classStr = "kai-fav-icon kai-fav-" + row._id;
 
     return (
@@ -158,28 +180,6 @@ export const MusicLibPage = ({
       );
     }
     return <div></div>;
-  };
-
-  const getTitleText = (row) => {
-    // issues with reference passing
-    if (typeof row.titleText === "string") {
-      return "" + row.titleText;
-    }
-    if (typeof row.Title === "string") {
-      return "" + row.Title;
-    }
-    return "";
-  };
-
-  const getFavValue = (row) => {
-    // issues with reference passing
-    if (typeof row.favVal === "boolean") {
-      return row.favVal === true ? true : false;
-    }
-    if (typeof row.Favorite === "boolean") {
-      return row.Favorite === true ? true : false;
-    }
-    return false;
   };
 
   const getRowItems = (rows) =>
