@@ -28,7 +28,7 @@ The application is hosted on IBM Cloud and can be accessed [here](http://kai-kon
 - Navigate to favorite songs view
     - Unfavoriting a song in this view will cause the song to be removed from this table
     
--------------------------------------------------
+---
 
 ## Future enhancements
 There are still many features to add, here are some of the big ticket items.
@@ -43,7 +43,11 @@ There are also some smaller enhancements.
 
 Other enhancement details can be found [here](https://github.com/ka65359/kai-kong-music-lib/issues/6)
 
--------------------------------------------------
+### Known issue
+- If you start filtering while on the second (or later) page and there aren't enough results to get that page you are given an empty table. 
+    - Workaround: Click the page back button as many times as needed to get back to the first page.
+
+---
 
 ## Instructions to run locally
 1. Clone the repo
