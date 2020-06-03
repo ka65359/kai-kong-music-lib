@@ -16,7 +16,7 @@ The application is hosted on IBM Cloud and can be accessed [here](http://kai-kon
 - Filter displayed songs based on title, artist, and album text
 - Navigate to song library view
     - **Note:** Navigation is displayed in a panel on the left
-    - The table displays the song title (as link if a play link is specified), artist, album, an album image, the genre
+    - The table displays the song title (as link if a play link is specified), artist, album, an album image, and the genre
     - The table supports sorting on the title, artist, album, and genre fields
     - Pagination support
 - Each song in the table has the following options available:
@@ -31,8 +31,17 @@ The application is hosted on IBM Cloud and can be accessed [here](http://kai-kon
 -------------------------------------------------
 
 ## Future enhancements
+There are still many features to add, here are some of the big ticket items.
+- Persist song order - current DB API limitation
+- Playlist support and associated bulk actions (add, remove songs)
+- Bulk actions like Delete and Move to the top for table items
 
--
+There are also some smaller enhancements.
+- Show larger album image preview on hover
+- Allow the user to add a new Genre during create
+- Shuffle songs in the list
+
+Other enhancement details can be found [here](https://github.com/ka65359/kai-kong-music-lib/issues/6)
 
 -------------------------------------------------
 
