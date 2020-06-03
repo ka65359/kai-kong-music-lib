@@ -1,6 +1,4 @@
-# kai-kong-music-lib
-
-# Music Library App
+# My Music Library
 This music library allows users to organize and view song data.
 The application is hosted on IBM Cloud and can be accessed [here](http://kai-kong-music-lib.mybluemix.net/).
 
