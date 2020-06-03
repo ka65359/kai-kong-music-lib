@@ -58,9 +58,14 @@ This application is currently only supported in chrome when running the project 
     - If you see issues regarding `/core` not being found, run `npm run postinstall`
 5. To successfully run this app from localhost you will need to use the `--disable-web-security` in Chrome to avoid CORS errors.
 
-If you would like to only see the documentation you can run `npm run start:server`
-**Note:** To see information about what other scripts are available run `npm run scripts`.
+### Documentation
+JSDoc documentation is not available on the deployed version, but is accessible when running the project locally.
+The documentation is hosted locally, so you do not need to worry about any issues with CORS.
 
+If you would like to view only the documentation you can skip starting the rest of the application and simply run `npm run start:server`.
+The docs are available on the API port: http://localhost:4400/docs
+
+**Note:** To see information about what other scripts are available run `npm run scripts`.
 
 
 ## Technologies
