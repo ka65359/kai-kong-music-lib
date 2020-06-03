@@ -160,22 +160,22 @@ export const MusicLibPage = ({
   };
 
   const getAlbumImage = (row) => {
-    if (_.get(row, "Album_Image.length")) {
-      return (
-        <img
-          className="kai-table-album-img"
-          alt={row.Album}
-          title={row.Album}
-          src={`https://kaimusic-187c.restdb.io/media/${row.Album_Image[0]}?s=t`}
-        />
-      );
-    } else if (row.Album_Link) {
+    if (row.Album_Link) {
       return (
         <img
           className="kai-table-album-img-link"
           alt={row.Album}
           title={row.Album}
           src={row.Album_Link}
+        />
+      );
+    } else if (_.get(row, "Album_Image.length")) {
+      return (
+        <img
+          className="kai-table-album-img"
+          alt={row.Album}
+          title={row.Album}
+          src={`https://kaimusic-187c.restdb.io/media/${row.Album_Image[0]}?s=t`}
         />
       );
     }
