@@ -1,18 +1,6 @@
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-/**
- * @author Kai
- * @version 1.0.0
- *
- * @exports WelcomeHeader
- *
- */
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
 import React from "react";
 import { connect } from "react-redux";
 import { compose, lifecycle, pure, withState, withHandlers } from "recompose";
-import PropTypes from "prop-types";
 import _ from "lodash";
 import {
   Header,
@@ -50,10 +38,7 @@ const enhance = compose(
     }
   })
 );
-/**
- * @module WelcomeHeader
- * @description Displays header including the Add song button
- */
+
 const WelcomeHeader = ({
   addModalOpen,
   onsetAddModalOpen,
@@ -87,22 +72,6 @@ const WelcomeHeader = ({
       />
     </div>
   );
-};
-
-/**
- * The parameters come from state and store.
- *
- * @typedef {Object} WelcomeHeader *
- * @property  {Boolean}     addModalOpen      Whether or not the create song dialog is open
- * @property  {Function}    onsetAddModalOpen Change whether or not the dialog is open
- * @property  {Object}      song              Song data for a newly added song
- * @property  {onsetSong}   onsetSong         Update new song's data
- */
-WelcomeHeader.propTypes = {
-  addModalOpen: PropTypes.bool,
-  onsetAddModalOpen: PropTypes.func.isRequired,
-  song: PropTypes.object.isRequired,
-  onsetSong: PropTypes.func.isRequired
 };
 
 export default enhance(WelcomeHeader);

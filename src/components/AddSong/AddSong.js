@@ -1,16 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-/**
- * @author Kai
- * @version 1.0.0
- *
- * @exports AddSongModal
- *
- */
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
 import React from "react";
-import PropTypes from "prop-types";
 import _ from "lodash";
 import Checkbox from "carbon-components-react/lib/components/Checkbox";
 import ComboBox from "carbon-components-react/lib/components/ComboBox";
@@ -19,10 +7,18 @@ import TextInput from "carbon-components-react/lib/components/TextInput";
 import { createSong } from "store/actions/musicLib";
 import store from "../../store";
 import * as constants from "../../constants/musicLib";
-
 /**
- * @module AddSongModal
- * @description Displays the create or edit song dialog
+ * [AddSongModal description]
+ *
+ * @method AddSongModal
+ *
+ * @param  {[type]}     addModalOpen    [description]
+ * @param  {String}     prefix          [namespace to make ids unique] - required!
+ * @param  {[type]}     setAddModalOpen [description]
+ * @param  {[type]}     song            [description]
+ * @param  {[type]}     setSong         [description]
+ * @param  {Boolean}    isEditMode      Whether or not the dialog is in edit mode
+ * @param  {[type]}     confirmCallback [description] - should take song
  */
 const AddSongModal = ({
   addModalOpen,
@@ -33,16 +29,6 @@ const AddSongModal = ({
   isEditMode,
   confirmCallback
 }) => {
-  /**
-   * Check if the song data is valid and determine whether or
-   * not to close the dialog.
-   *
-   * @method validateSongData
-   *
-   * @param  {Function}         setAddModalOpen Set dialog open status
-   * @param  {Object}           song            Current song data to validate
-   * @param  {Function}         setSong         Update local song data
-   */
   const validateSongData = (setAddModalOpen, song, setSong) => {
     song = checkIsValid(song);
     if (!song.isValid) {
@@ -53,8 +39,6 @@ const AddSongModal = ({
     }
   };
 
-  // Get the data when a field is changed and update the local
-  // song data
   const handleFieldChanged = (field, evt, type) => {
     if (type == "checkbox") {
       song[field] = evt;
@@ -72,28 +56,24 @@ const AddSongModal = ({
     setSong(song);
   };
 
-  // Validation checks
   const checkIsValid = (song) => {
     const urlRegex = new RegExp(/^(https?):\/\/[^\s$.?#].[^\s]*$/);
     const imgRegex = new RegExp(
       /(http(s?):)([/|.|\w|\s|%|-])*\.(?:jpg|jpeg|bmp|gif|png)/
     );
     song.isValid = true;
-    // Title is required
     if (!song.Title) {
       song.isValid = false;
       song.fieldValid.Title = false;
     } else {
       song.fieldValid.Title = true;
     }
-    // Album link must be to a valid image URL
     if (song.Album_Link && !song.Album_Link.match(imgRegex)) {
       song.isValid = false;
       song.fieldValid.Album_Link = false;
     } else {
       song.fieldValid.Album_Link = true;
     }
-    // Play Link must be a valid URL
     if (song.Play_Link && !song.Play_Link.match(urlRegex)) {
       song.isValid = false;
       song.fieldValid.Play_Link = false;
@@ -283,29 +263,6 @@ const AddSongModal = ({
       </div>
     </Modal>
   );
-};
-
-/**
- * Add song dialog. Described in header comments.
- *
- * @typedef {Object} AddSongModal
- *
- * @property  {Boolean}      addModalOpen    Whether or not the dialog is open
- * @property  {String}       prefix          Namespace to make ids unique
- * @property  {Function}     setAddModalOpen Set dialog open state
- * @property  {Object}       song            Song object with data as entered in the dialog
- * @property  {Function}     setSong         Set the song data
- * @property  {Boolean}      isEditMode      Whether or not the dialog is in edit mode
- * @property  {Function}     confirmCallback The callback when the Submit button is clicked
- */
-AddSongModal.propTypes = {
-  addModalOpen: PropTypes.bool,
-  setAddModalOpen: PropTypes.func.isRequired,
-  song: PropTypes.object.isRequired,
-  setSong: PropTypes.func.isRequired,
-  prefix: PropTypes.string.isRequired,
-  isEditMode: PropTypes.bool,
-  confirmCallback: PropTypes.func
 };
 
 export default AddSongModal;
