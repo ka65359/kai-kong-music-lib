@@ -43,9 +43,11 @@ There are also some smaller enhancements.
 
 Other enhancement details can be found [here](https://github.com/ka65359/kai-kong-music-lib/issues/6)
 
-### Known issue
+### Known issues
 - If you start filtering while on the second (or later) page and there aren't enough results to get to that page you are given an empty table. 
     - Workaround: Click the page back button as many times as needed to get back to the first page.
+- If you filter and then move a song up or down, clearing the filter does not return the full list of songs
+    - Workaround: Refresh the page 
 
 ---
 ## Requirements
