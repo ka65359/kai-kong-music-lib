@@ -59,7 +59,7 @@ const AddSongModal = ({
   const checkIsValid = (song) => {
     const urlRegex = new RegExp(/^(https?):\/\/[^\s$.?#].[^\s]*$/);
     const imgRegex = new RegExp(
-      /(http(s?):)([/|.|\w|\s|-|%])*\.(?:jpg|jpeg|bmp|gif|png)/
+      /(http(s?):)([/|.|\w|\s|%|-])*\.(?:jpg|jpeg|bmp|gif|png)/
     );
     song.isValid = true;
     if (!song.Title) {
