@@ -57,7 +57,11 @@ This application is currently only supported in chrome when running the project 
 4. Run `npm run start`
     - If you see issues regarding `/core` not being found, run `npm run postinstall`
 5. To successfully run this app from localhost you will need to use the `--disable-web-security` in Chrome to avoid CORS errors.
+
+If you would like to only see the documentation you can run `npm run start:server`
 **Note:** To see information about what other scripts are available run `npm run scripts`.
+
+
 
 ## Technologies
 - Basic web application (`react`)
