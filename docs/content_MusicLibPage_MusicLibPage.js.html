@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>content/MusicLibPage/MusicLibPage.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#getFavValue">getFavValue</a></li><li><a href="global.html#getFilteredRows">getFilteredRows</a></li><li><a href="global.html#getTitleText">getTitleText</a></li><li><a href="global.html#handleEditClicked">handleEditClicked</a></li><li><a href="global.html#moveRowDown">moveRowDown</a></li><li><a href="global.html#moveRowUp">moveRowUp</a></li><li><a href="global.html#moveToTop">moveToTop</a></li><li><a href="global.html#sortSongs">sortSongs</a></li><li><a href="global.html#validateSongData">validateSongData</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">content/MusicLibPage/MusicLibPage.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * @author Kai
+ * @version 1.0.0
+ * @module MusicLibPage
+ * @description Displays the central content of the music library
+ * @exports MusicLibPage
+ *
+ * @typedef {Object} MusicLibPage
+ *
+ */
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { compose, lifecycle, pure } from "recompose";
+import PropTypes from "prop-types";
+import _ from "lodash";
+import { DataTableSkeleton, Pagination } from "carbon-components-react";
+import Favorite32 from "@carbon/icons-react/lib/favorite/20";
+import FavoriteFilled32 from "@carbon/icons-react/lib/favorite--filled/20";
+import {
+  setDataFetching,
+  setAllSongs,
+  clearAllSongs,
+  setTableSearchStr,
+  setSongUpdating
+} from "store/actions";
+import { getAllSongs, updateSong } from "store/actions/musicLib";
+import store from "../../store";
+import SongTable from "./SongTable";
+
+const mapDispatchToProps = {
+  getAllSongs,
+  setAllSongs,
+  clearAllSongs,
+  updateSong,
+  setSongUpdating,
+  setTableSearchStr
+};
+
+const enhance = compose(
+  pure,
+  connect(
+    (state) => ({
+      currentPage: state.ui.musicLib.currentPage,
+      songs: state.ui.musicLib.songs,
+      searchStr: state.ui.musicLib.searchStr,
+      tableSortData: state.ui.musicLib.tableSortData,
+      dataFetching: state.ui.musicLib.dataFetching,
+      songUpdating: state.ui.musicLib.songUpdating,
+      playlists: state.ui.musicLib.playlists
+    }),
+    mapDispatchToProps
+  ),
+  lifecycle({
+    UNSAFE_componentWillMount() {
+      // populate song data
+      store.dispatch(setDataFetching(true));
+      store.dispatch(getAllSongs());
+    },
+    componentDidMount() {},
+    componentWillUnmount() {},
+    shouldComponentUpdate(nextProps) {
+      if (this.props !== nextProps) {
+        return true;
+      }
+    }
+  })
+);
+
+export const MusicLibPage = ({
+  currentPage,
+  songs,
+  searchStr,
+  tableSortData,
+  dataFetching,
+  updateSong,
+  songUpdating,
+  setSongUpdating,
+  setTableSearchStr
+}) => {
+  const [firstRowIndex, setFirstRowIndex] = useState(0);
+  const [currentPageSize, setCurrentPageSize] = useState(10);
+
+  const headers = [
+    {
+      key: "Title",
+      header: "Title"
+    },
+    {
+      key: "Artist",
+      header: "Artist"
+    },
+    {
+      key: "Album",
+      header: "Album"
+    },
+    {
+      key: "AlbumImage",
+      header: "",
+      isSortable: false
+    },
+    {
+      key: "Genre",
+      header: "Genre"
+    },
+    {
+      key: "Favorite",
+      header: "Favorite",
+      isSortable: false
+    }
+  ];
+
+  /**
+   * We transform the Title attribute into an HTML anchor if a
+   * play link was specified, but we need to keep track of the
+   * actual text.
+   *
+   * @method getTitleText
+   *
+   * @param  {Object}     row Current row data
+   *
+   * @return {String}         The song title text
+   */
+  const getTitleText = (row) => {
+    // issues with reference passing
+    if (typeof row.titleText === "string") {
+      return "" + row.titleText;
+    }
+    if (typeof row.Title === "string") {
+      return "" + row.Title;
+    }
+    return "";
+  };
+
+  /**
+   * We transform the Favorite attribute into an HTML image,
+   * but we need to keep track of the actual boolean value.
+   *
+   * @method getFavValue
+   *
+   * @param  {Object}     row Current row data
+   *
+   * @return {Boolean}        Whether or not the song is favorited
+   */
+  const getFavValue = (row) => {
+    // issues with reference passing
+    if (typeof row.favVal === "boolean") {
+      return row.favVal === true ? true : false;
+    }
+    if (typeof row.Favorite === "boolean") {
+      return row.Favorite === true ? true : false;
+    }
+    return false;
+  };
+
+  const toggleFavorite = (row) => {
+    if (!songUpdating.includes(row._id)) {
+      setSongUpdating(row._id);
+      row.Favorite = !row.Favorite;
+      row.favVal = row.Favorite;
+      updateSong(row);
+    }
+  };
+
+  // Get Favorite icon html
+  const getFavButton = (row) => {
+    let icon = getFavValue(row) ? &lt;FavoriteFilled32 /> : &lt;Favorite32 />;
+    let classStr = "kai-fav-icon kai-fav-" + row._id;
+
+    return (
+      &lt;div
+        className={classStr}
+        title="Toggle favorite"
+        onClick={() => toggleFavorite(row)}>
+        {icon}
+      &lt;/div>
+    );
+  };
+
+  // Get song title as a link to play the song
+  const getSongTitleLink = (row) => {
+    if (typeof row.Title !== "string") {
+      return row.Title;
+    }
+    return (
+      &lt;a
+        href={row.Play_Link}
+        className="kai-title-link"
+        title="Play Song"
+        rel="external noopener noreferrer"
+        target="_blank">
+        {row.Title}
+      &lt;/a>
+    );
+  };
+
+  // Get the html for the album image
+  const getAlbumImage = (row) => {
+    if (row.Album_Link) {
+      return (
+        &lt;img
+          className="kai-table-album-img-link"
+          alt={row.Album}
+          title={row.Album}
+          src={row.Album_Link}
+        />
+      );
+    } else if (_.get(row, "Album_Image.length")) {
+      return (
+        &lt;img
+          className="kai-table-album-img"
+          alt={row.Album}
+          title={row.Album}
+          src={`https://kaimusic-187c.restdb.io/media/${row.Album_Image[0]}?s=t`}
+        />
+      );
+    }
+    return &lt;div>&lt;/div>;
+  };
+
+  const getRowItems = (rows) =>
+    rows.map((row) => ({
+      ...row,
+      id: row._id,
+      key: row._id,
+      titleText: getTitleText(row),
+      Title: row.Play_Link ? getSongTitleLink(row) : row.Title,
+      PlayLink: row.Play_Link,
+      Artist: row.Artist,
+      Album: row.Album,
+      Genre: row.Genre,
+      favVal: getFavValue(row),
+      Favorite: getFavButton(row),
+      AlbumImage: getAlbumImage(row)
+    }));
+
+  let loading = &lt;div>&lt;/div>;
+  if (dataFetching) {
+    loading = (
+      &lt;DataTableSkeleton
+        columnCount={headers.length + 1}
+        rowCount={10}
+        headers={headers}
+      />
+    );
+  }
+
+  const rows = getRowItems(songs);
+
+  /**
+   * If a search string is applied this will return any
+   * song who's title, artist, or album contains the string.
+   * Search is case-insensitive.
+   *
+   * @method getFilteredRows
+   *
+   * @param  {String}        searchStr Search string
+   * @param  {Object[]}      rows      Rows to filter
+   *
+   * @return {Object[]}                Filtered rows
+   */
+  const getFilteredRows = (searchStr, rows) => {
+    if (!searchStr) {
+      return rows;
+    }
+    searchStr = searchStr.toLowerCase();
+    const searchFields = ["titleText", "Artist", "Album"];
+    const re = new RegExp(`.*${searchStr}.*`);
+    let filteredRows = [];
+    for (let j = 0; j &lt; rows.length; j++) {
+      for (let i = 0; i &lt; searchFields.length; i++) {
+        let testStr = rows[j][searchFields[i]].toLowerCase();
+        if (typeof testStr == "string") {
+          testStr = testStr.toLowerCase();
+        }
+        if (testStr.match(re)) {
+          filteredRows.push(rows[j]);
+          break;
+        }
+      }
+    }
+    return filteredRows;
+  };
+
+  /**
+   * Sort songs by title, album, artist, or genre.
+   *
+   * @method sortSongs
+   *
+   * @param  {Object[]}   rows          Rows to sort
+   * @param  {String}     sortDirection "ASC" or "DESC"
+   * @param  {String}     key           Song field to sort by
+   *
+   * @return {Object[]}                 Sorted rows
+   */
+  const sortSongs = (rows, sortDirection, key) => {
+    if (
+      key == "Album_Link" ||
+      key == "Album_Image" ||
+      key == "Play_Link" ||
+      key == "Favorite"
+    ) {
+      console.error("Error: Sorting by " + key + " is disabled.");
+      return rows;
+    }
+    const compare = (a, b) => {
+      a = _.cloneDeep(a[key]);
+      b = _.cloneDeep(b[key]);
+
+      if (typeof a === "undefined") {
+        a = "";
+      }
+      if (typeof b === "undefined") {
+        b = "";
+      }
+
+      if (typeof a == "string") {
+        a = a.toLowerCase();
+      } else if (typeof a == "object") {
+        if (_.get(a, "props.children")) {
+          a = a.props.children;
+        } else if (_.get(a, "selectedItem.label")) {
+          a = a.selectedItem.label;
+        }
+      }
+      if (typeof b == "string") {
+        b = b.toLowerCase();
+      } else if (typeof b == "object") {
+        if (_.get(b, "props.children")) {
+          b = b.props.children;
+        } else if (_.get(b, "selectedItem.label")) {
+          b = b.selectedItem.label;
+        }
+      }
+      return a > b ? 1 : -1;
+    };
+    if (key === "Title") {
+      key = "titleText";
+    }
+    let sortedRows;
+    if (sortDirection !== "DESC") {
+      sortedRows = rows.sort((a, b) => {
+        return compare(a, b);
+      });
+    } else {
+      sortedRows = rows.sort((a, b) => {
+        return compare(b, a);
+      });
+    }
+    return sortedRows;
+  };
+
+  let displayedRows = rows;
+  // If we are on favorites view, only display favorited songs
+  if (currentPage == "favorites") {
+    displayedRows = rows.filter((arow) => arow.favVal === true);
+  }
+
+  if (tableSortData.key) {
+    let temp = sortSongs(
+      displayedRows,
+      tableSortData.sortDirection,
+      tableSortData.key
+    );
+    displayedRows = temp; // don't assign to the object we are operating on
+  }
+  if (searchStr) {
+    displayedRows = getFilteredRows(searchStr, displayedRows);
+  }
+
+  return (
+    &lt;div className="bx--grid bx--grid--full-width bx--grid--no-gutter music-lib-page">
+      &lt;div className="bx--row music-lib-page__r1">
+        &lt;div className="bx--col-lg-16">
+          {loading}
+          &lt;SongTable
+            headers={headers}
+            rows={displayedRows.slice(
+              firstRowIndex,
+              firstRowIndex + currentPageSize
+            )}
+            songs={songs}
+            sortKey={tableSortData.key}
+            sortDir={tableSortData.sortDirection}
+            onSearchUpdate={(evt) => setTableSearchStr(evt.target.value)}
+          />
+          &lt;Pagination
+            totalItems={displayedRows.length}
+            backwardText="Previous page"
+            forwardText="Next page"
+            pageSize={currentPageSize}
+            pageSizes={[5, 10, 15, 25]}
+            itemsPerPageText="Items per page"
+            onChange={({ page, pageSize }) => {
+              if (pageSize !== currentPageSize) {
+                setCurrentPageSize(pageSize);
+              }
+              setFirstRowIndex(pageSize * (page - 1));
+            }}
+          />
+        &lt;/div>
+      &lt;/div>
+    &lt;/div>
+  );
+};
+
+/**
+ * These values come from state and store.
+ *
+ * @type {Object}  MusicLibPage
+ */
+MusicLibPage.propTypes = {
+  currentPage: PropTypes.string.isRequired,
+  songs: PropTypes.array.isRequired,
+  searchStr: PropTypes.string,
+  tableSortData: PropTypes.shape({
+    key: PropTypes.string,
+    sortDirection: PropTypes.string
+  }).required,
+  dataFetching: PropTypes.boolean,
+  updateSong: PropTypes.func.isRequired,
+  songUpdating: PropTypes.boolean,
+  setSongUpdating: PropTypes.func.isRequired,
+  setTableSearchStr: PropTypes.func.isRequired
+};
+
+export default enhance(MusicLibPage);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Wed Jun 03 2020 14:00:45 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
