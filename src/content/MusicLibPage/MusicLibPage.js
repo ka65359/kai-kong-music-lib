@@ -10,6 +10,7 @@ import {
   setAllSongs,
   clearAllSongs,
   setTableSearchStr,
+  setCurrentTablePage,
   setSongUpdating
 } from "store/actions";
 import { getAllSongs, updateSong } from "store/actions/musicLib";
@@ -22,9 +23,11 @@ const mapDispatchToProps = {
   clearAllSongs,
   updateSong,
   setSongUpdating,
-  setTableSearchStr
+  setTableSearchStr,
+  setCurrentTablePage
 };
 
+let songPagination = React.createRef();
 const enhance = compose(
   pure,
   connect(
@@ -33,6 +36,7 @@ const enhance = compose(
       songs: state.ui.musicLib.songs,
       searchStr: state.ui.musicLib.searchStr,
       tableSortData: state.ui.musicLib.tableSortData,
+      currentTablePage: state.ui.musicLib.currentTablePage,
       dataFetching: state.ui.musicLib.dataFetching,
       songUpdating: state.ui.musicLib.songUpdating,
       playlists: state.ui.musicLib.playlists
@@ -42,6 +46,7 @@ const enhance = compose(
   lifecycle({
     UNSAFE_componentWillMount() {
       // populate song data
+      window.kaiAppData.paginationWidget = songPagination;
       store.dispatch(setDataFetching(true));
       store.dispatch(getAllSongs());
     },
@@ -290,6 +295,35 @@ export const MusicLibPage = ({
     }
     return sortedRows;
   };
+  const handlePagChange = (currPage, currPageSize, type) => {
+    /* if (songPagination && songPagination.current) {
+      if (currPage !== songPagination.current.state.page) {
+        songPagination.current.handlePageChange({ target: { value: currPage } });
+      }
+    }
+    if (currPage != currentTablePage) {
+      setCurrentTablePage(currPage);
+    }*/
+    if (
+      type == "filter" &&
+      _.get(
+        window,
+        "kaiAppData.paginationWidget.current.state.page",
+        currPage
+      ) > currPage
+    ) {
+      while (window.kaiAppData.paginationWidget.current.state.page !== 1) {
+        window.kaiAppData.paginationWidget.current.state.page = 1;
+        window.kaiAppData.paginationWidget.current.state.prevPage = 1;
+        currPage++;
+      }
+    }
+
+    if (currPageSize !== currentPageSize) {
+      setCurrentPageSize(currPageSize);
+    }
+    setFirstRowIndex(currPageSize * (currPage - 1));
+  };
 
   let displayedRows = rows;
   if (currentPage == "favorites") {
@@ -305,9 +339,11 @@ export const MusicLibPage = ({
     displayedRows = temp; // don't assign to the object we are operating on
   }
   if (searchStr) {
+    if (_.get(window, "kaiAppData.paginationWidget.current.state.page") !== 1) {
+      handlePagChange(1, currentPageSize, "filter");
+    }
     displayedRows = getFilteredRows(searchStr, displayedRows);
   }
-
   return (
     <div className="bx--grid bx--grid--full-width bx--grid--no-gutter music-lib-page">
       <div className="bx--row music-lib-page__r1">
@@ -325,6 +361,7 @@ export const MusicLibPage = ({
             onSearchUpdate={(evt) => setTableSearchStr(evt.target.value)}
           />
           <Pagination
+            ref={songPagination}
             totalItems={displayedRows.length}
             backwardText="Previous page"
             forwardText="Next page"
@@ -332,10 +369,7 @@ export const MusicLibPage = ({
             pageSizes={[5, 10, 15, 25]}
             itemsPerPageText="Items per page"
             onChange={({ page, pageSize }) => {
-              if (pageSize !== currentPageSize) {
-                setCurrentPageSize(pageSize);
-              }
-              setFirstRowIndex(pageSize * (page - 1));
+              handlePagChange(page, pageSize);
             }}
           />
         </div>

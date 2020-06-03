@@ -17,3 +17,6 @@ export const clearSongUpdating = createAction(
 );
 export const setTableSearchStr = createAction("Set song table's search string");
 export const setTableSortData = createAction("Set song table's sort data");
+export const setCurrentTablePage = createAction(
+  "Set page for table pagination"
+);
