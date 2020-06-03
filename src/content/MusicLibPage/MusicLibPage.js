@@ -419,10 +419,10 @@ MusicLibPage.propTypes = {
   tableSortData: PropTypes.shape({
     key: PropTypes.string,
     sortDirection: PropTypes.string
-  }).required,
-  dataFetching: PropTypes.boolean,
+  }),
+  dataFetching: PropTypes.bool,
   updateSong: PropTypes.func.isRequired,
-  songUpdating: PropTypes.boolean,
+  songUpdating: PropTypes.bool,
   setSongUpdating: PropTypes.func.isRequired,
   setTableSearchStr: PropTypes.func.isRequired
 };

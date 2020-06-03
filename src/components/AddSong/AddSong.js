@@ -298,12 +298,12 @@ const AddSongModal = ({
  * @type {Object}  AddSongModal
  */
 AddSongModal.propTypes = {
-  addModalOpen: PropTypes.boolean,
+  addModalOpen: PropTypes.bool,
   setAddModalOpen: PropTypes.func.isRequired,
   song: PropTypes.object.isRequired,
   setSong: PropTypes.func.isRequired,
   prefix: PropTypes.string.isRequired,
-  isEditMode: PropTypes.boolean,
+  isEditMode: PropTypes.bool,
   confirmCallback: PropTypes.func
 };
 

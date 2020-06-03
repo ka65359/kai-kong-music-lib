@@ -95,7 +95,7 @@ const WelcomeHeader = ({
  * @type {Object}  WelcomeHeader
  */
 WelcomeHeader.propTypes = {
-  addModalOpen: PropTypes.boolean,
+  addModalOpen: PropTypes.bool,
   onsetAddModalOpen: PropTypes.func.isRequired,
   song: PropTypes.object.isRequired,
   onsetSong: PropTypes.func.isRequired
