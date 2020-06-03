@@ -42,6 +42,8 @@ import {
   TrashCan20,
   Edit20
 } from "@carbon/icons-react";
+import Favorite32 from "@carbon/icons-react/lib/favorite/20";
+import FavoriteFilled32 from "@carbon/icons-react/lib/favorite--filled/20";
 import { setTableSortData, setAllSongs, setSongUpdating } from "store/actions";
 import { updateSong, deleteSong } from "store/actions/musicLib";
 import AddSong from "../../components/AddSong";
@@ -254,6 +256,89 @@ const SongTable = ({
     window.kaiAppData = {};
   }
   window.kaiAppData.songTableRef = React.createRef();
+
+  const getVal = (cell, songs) => {
+    let id = cell.id.split(":")[0];
+    let rows = songs.filter((song) => id == song.id);
+    if (!rows.length) {
+      console.error("Associated row not found");
+    }
+    let row = rows[0];
+    let val = _.get(cell, "value.selectedItem.label", cell.value);
+    const toggleFavorite = (row) => {
+      if (!songUpdating.includes(row._id)) {
+        setSongUpdating(row._id);
+        row.Favorite = !row.Favorite;
+        row.favVal = row.Favorite;
+        updateSong(row);
+      }
+    };
+
+    const getFavButton = (row) => {
+      let icon = row.favVal ? <FavoriteFilled32 /> : <Favorite32 />;
+      let classStr = "kai-fav-icon kai-fav-" + row._id;
+
+      return (
+        <div
+          className={classStr}
+          title="Toggle favorite"
+          onClick={() => toggleFavorite(row)}>
+          {icon}
+        </div>
+      );
+    };
+
+    const getSongTitleLink = (row) => {
+      if (typeof row.Title !== "string") {
+        return row.Title;
+      }
+      return (
+        <a
+          href={row.Play_Link}
+          className="kai-title-link"
+          title="Play Song"
+          rel="external noopener noreferrer"
+          target="_blank">
+          {row.Title}
+        </a>
+      );
+    };
+
+    const getAlbumImage = (row) => {
+      if (row.Album_Image) {
+        return (
+          <img
+            className="kai-table-album-img"
+            alt={row.Album}
+            title={row.Album}
+            src={`https://kaimusic-187c.restdb.io/media/${row.Album_Image}?s=t`}
+          />
+        );
+      } else if (row.Album_Link) {
+        return (
+          <img
+            className="kai-table-album-img-link"
+            alt={row.Album}
+            title={row.Album}
+            src={row.Album_Link}
+          />
+        );
+      }
+      return <div></div>;
+    };
+    /*   console.log("*******************");
+      console.log(cell.info.header);
+      console.log(val);*/
+    if (cell.info.header == "Title") {
+      val = row.Play_Link ? getSongTitleLink(row) : row.titleText;
+    } else if (cell.info.header == "Favorite") {
+      val = getFavButton(row);
+    } else if (cell.info.header == "AlbumImage") {
+      val = getAlbumImage(row);
+    }
+    return <div>{val}</div>;
+  };
+
   return (
     <div>
       <DataTable
@@ -309,7 +394,7 @@ const SongTable = ({
                     <TableRow {...getRowProps({ row })}>
                       {row.cells.map((cell) => (
                         <TableCell key={cell.id}>
-                          {_.get(cell, "value.selectedItem.label", cell.value)}
+                          {getVal(cell, songs)}
                         </TableCell>
                       ))}
                       <TableCell className="bx--table-column">

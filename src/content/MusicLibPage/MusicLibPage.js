@@ -192,12 +192,16 @@ export const MusicLibPage = ({
       key: row._id,
       titleText: getTitleText(row),
       Title: row.Play_Link ? getSongTitleLink(row) : row.Title,
+      //    Title: row.Title,
+      PlayLink: row.Play_Link,
       Artist: row.Artist,
       Album: row.Album,
       Genre: row.Genre,
       favVal: getFavValue(row),
+      //     Favorite: row.Favorite,
       Favorite: getFavButton(row),
       AlbumImage: getAlbumImage(row)
+      //    AlbumImage: row.Album_Image
     }));
 
   let loading = <div></div>;
@@ -299,11 +303,12 @@ export const MusicLibPage = ({
   }
 
   if (tableSortData.key) {
-    displayedRows = sortSongs(
+    let temp = sortSongs(
       displayedRows,
       tableSortData.sortDirection,
       tableSortData.key
     );
+    displayedRows = temp; // don't assign to the object we are operating on
   }
   if (searchStr) {
     displayedRows = getFilteredRows(searchStr, displayedRows);
