@@ -3,11 +3,8 @@
 /**
  * @author Kai
  * @version 1.0.0
- * @module MusicLibPage
- * @description Displays the central content of the music library
- * @exports MusicLibPage
  *
- * @typedef {Object} MusicLibPage
+ * @exports MusicLibPage
  *
  */
 ////////////////////////////////////////////////////////////////////////////////
@@ -49,8 +46,7 @@ const enhance = compose(
       searchStr: state.ui.musicLib.searchStr,
       tableSortData: state.ui.musicLib.tableSortData,
       dataFetching: state.ui.musicLib.dataFetching,
-      songUpdating: state.ui.musicLib.songUpdating,
-      playlists: state.ui.musicLib.playlists
+      songUpdating: state.ui.musicLib.songUpdating
     }),
     mapDispatchToProps
   ),
@@ -69,7 +65,10 @@ const enhance = compose(
     }
   })
 );
-
+/**
+ * @module MusicLibPage
+ * @description Displays the central content of the music library *
+ */
 export const MusicLibPage = ({
   currentPage,
   songs,
@@ -410,7 +409,18 @@ export const MusicLibPage = ({
 /**
  * These values come from state and store.
  *
- * @type {Object}  MusicLibPage
+ * @typedef {Object} MusicLibPage
+ * @property  {String}       currentPage       Can be either 'library' or 'favorites'
+ * @property  {Object[]}     songs             The songs in the library
+ * @property  {String}       searchStr         A string to filter by title, artist, or album if specified
+ * @property  {Object}       tableSortData     Sort data for the song table
+ * @property  {String}       tableSortData.key           The field to sort by
+ * @property  {String}       tableSortData.sortDirection Can be "ASC" or "DESC"
+ * @property  {Boolean}      dataFetching      Whether or not data is being fetched
+ * @property  {Function}     updateSong        REST call to update a song's data
+ * @property  {String[]}     songUpdating      An array of id's of songs being updated currently
+ * @property  {Function}     setSongUpdating   Update which songs are in the process of updating
+ * @property  {Function}     setTableSearchStr Update search string
  */
 MusicLibPage.propTypes = {
   currentPage: PropTypes.string.isRequired,

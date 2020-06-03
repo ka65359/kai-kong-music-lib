@@ -3,11 +3,8 @@
 /**
  * @author Kai
  * @version 1.0.0
- * @module WelcomeHeader
- * @description Displays header including the Add song button
- * @exports WelcomeHeader
  *
- * @typedef {Object} WelcomeHeader
+ * @exports WelcomeHeader
  *
  */
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +50,10 @@ const enhance = compose(
     }
   })
 );
-
+/**
+ * @module WelcomeHeader
+ * @description Displays header including the Add song button
+ */
 const WelcomeHeader = ({
   addModalOpen,
   onsetAddModalOpen,
@@ -90,9 +90,13 @@ const WelcomeHeader = ({
 };
 
 /**
- * These values come from state and store.
+ * The parameters come from state and store.
  *
- * @type {Object}  WelcomeHeader
+ * @typedef {Object} WelcomeHeader *
+ * @property  {Boolean}     addModalOpen      Whether or not the create song dialog is open
+ * @property  {Function}    onsetAddModalOpen Change whether or not the dialog is open
+ * @property  {Object}      song              Song data for a newly added song
+ * @property  {onsetSong}   onsetSong         Update new song's data
  */
 WelcomeHeader.propTypes = {
   addModalOpen: PropTypes.bool,

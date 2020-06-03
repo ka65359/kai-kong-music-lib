@@ -3,15 +3,8 @@
 /**
  * @author Kai
  * @version 1.0.0
- * @module SongTable
- * @description A table to display data about songs.
- * @exports SongTable
  *
- * @typedef {Object} SongTable
- * @param  {Object[]}  songs          All songs in the database
- * @param  {Object[]}  rows           Table rows for the current page
- * @param  {Object[]}  headers        Table headers
- * @param  {function}  onSearchUpdate Callback when the search bar value is changed
+ * @exports SongTable
  *
  */
 ////////////////////////////////////////////////////////////////////////////////
@@ -99,6 +92,10 @@ const enhance = compose(
   })
 );
 
+/**
+ * @module SongTable
+ * @description A table to display data about songs.
+ */
 const SongTable = ({
   rows,
   headers,
@@ -416,7 +413,25 @@ const SongTable = ({
 /**
  * All but the first four properties are from state or store.
  *
- * @type {Object}
+ * @typedef {Object} SongTable
+ * @property  {Object[]}  songs          All songs in the database
+ * @property  {Object[]}  rows           Table rows for the current page
+ * @property  {Object[]}  headers        Table headers
+ * @property  {function}  onSearchUpdate Callback when the search bar value is changed
+ * @property  {function}  setTableSortData   Update table sort information
+ * @property  {function}  setAllSongs        Update full list of songs
+ * @property  {function}  updateSong         Update a specific song
+ * @property  {function}  deleteSong         Delete a song
+ * @property  {Boolean}  editModalOpen       Whether or not the edit song dialog is open
+ * @property  {Function}  onsetEditModalOpen Set whether the edit song dialog is open
+ * @property  {Object}  editSong             Song data for song being edited
+ * @property  {Function}  onsetEditSong      Set whether or not the edit dialog is open
+ * @property  {String[]}  songUpdating       An array of the id's of songs currently being updated
+ * @property  {Function}  setSongUpdating    Update whether or not a song is being updated
+ * @property  {Boolean}  delModalOpen        Whether or not the delete confirmation dialog is open
+ * @property  {Function}  onsetDelModalOpen  Set whether or not the delete confirmation dialog is open
+ * @property  {Object}  currentSong          The currently selected to perform an action on
+ * @property  {Function}  onsetCurrentSong   Set the current song
  */
 SongTable.propTypes = {
   songs: PropTypes.array.isRequired,

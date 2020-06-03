@@ -9,7 +9,7 @@
   },
   "plugins": ["plugins/markdown"],
   "meta": {
-    "title": "Kong Music Library App",
+    "title": "My Music Library",
     "description": "A simple music library app",
     "keyword": "music, library"
   },
@@ -22,6 +22,16 @@
     }
   },
   "opts": {
+    "sectionOrder": [
+      "Classes",
+      "Modules",
+      "Externals",
+      "Events",
+      "Namespaces",
+      "Mixins",
+      "Tutorials",
+      "Interfaces"
+    ],
     "static": true,
     "sort": true,
     "disqus": "",

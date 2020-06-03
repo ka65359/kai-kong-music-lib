@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#getFavValue">getFavValue</a></li><li><a href="global.html#getFilteredRows">getFilteredRows</a></li><li><a href="global.html#getTitleText">getTitleText</a></li><li><a href="global.html#handleEditClicked">handleEditClicked</a></li><li><a href="global.html#moveRowDown">moveRowDown</a></li><li><a href="global.html#moveRowUp">moveRowUp</a></li><li><a href="global.html#moveToTop">moveToTop</a></li><li><a href="global.html#sortSongs">sortSongs</a></li><li><a href="global.html#validateSongData">validateSongData</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-MusicLibPage.html">MusicLibPage</a><ul class='methods'><li data-type='method'><a href="module-MusicLibPage.html#~getFavValue">getFavValue</a></li><li data-type='method'><a href="module-MusicLibPage.html#~getFilteredRows">getFilteredRows</a></li><li data-type='method'><a href="module-MusicLibPage.html#~getTitleText">getTitleText</a></li><li data-type='method'><a href="module-MusicLibPage.html#~sortSongs">sortSongs</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#handleEditClicked">handleEditClicked</a></li><li><a href="global.html#moveRowDown">moveRowDown</a></li><li><a href="global.html#moveRowUp">moveRowUp</a></li><li><a href="global.html#moveToTop">moveToTop</a></li><li><a href="global.html#validateSongData">validateSongData</a></li></ul>
 </nav>
 
 <div id="main">
@@ -124,508 +124,6 @@
 
     
 
-    <h4 class="name" id="getFavValue"><span class="type-signature"></span>getFavValue<span class="signature">(row)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="content_MusicLibPage_MusicLibPage.js.html">content/MusicLibPage/MusicLibPage.js</a>, <a href="content_MusicLibPage_MusicLibPage.js.html#line138">line 138</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>We transform the Favorite attribute into an HTML image,
-but we need to keep track of the actual boolean value.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>row</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Current row data</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>Whether or not the song is favorited</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Boolean</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="getFilteredRows"><span class="type-signature"></span>getFilteredRows<span class="signature">(searchStr, rows)</span><span class="type-signature"> &rarr; {Array.&lt;Object>}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="content_MusicLibPage_MusicLibPage.js.html">content/MusicLibPage/MusicLibPage.js</a>, <a href="content_MusicLibPage_MusicLibPage.js.html#line253">line 253</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>If a search string is applied this will return any
-song who's title, artist, or album contains the string.
-Search is case-insensitive.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>searchStr</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Search string</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>rows</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;Object></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Rows to filter</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>Filtered rows</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;Object></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="getTitleText"><span class="type-signature"></span>getTitleText<span class="signature">(row)</span><span class="type-signature"> &rarr; {String}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="content_MusicLibPage_MusicLibPage.js.html">content/MusicLibPage/MusicLibPage.js</a>, <a href="content_MusicLibPage_MusicLibPage.js.html#line116">line 116</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>We transform the Title attribute into an HTML anchor if a
-play link was specified, but we need to keep track of the
-actual text.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>row</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Current row data</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>The song title text</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">String</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
     <h4 class="name" id="handleEditClicked"><span class="type-signature"></span>handleEditClicked<span class="signature">(row)</span><span class="type-signature"></span></h4>
 
     
@@ -638,7 +136,7 @@ actual text.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="content_MusicLibPage_SongTable.js.html">content/MusicLibPage/SongTable.js</a>, <a href="content_MusicLibPage_SongTable.js.html#line260">line 260</a>
+        <a href="content_MusicLibPage_SongTable.js.html">content/MusicLibPage/SongTable.js</a>, <a href="content_MusicLibPage_SongTable.js.html#line265">line 265</a>
     </li></ul></dd>
     
 
@@ -774,7 +272,7 @@ actual text.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="content_MusicLibPage_SongTable.js.html">content/MusicLibPage/SongTable.js</a>, <a href="content_MusicLibPage_SongTable.js.html#line145">line 145</a>
+        <a href="content_MusicLibPage_SongTable.js.html">content/MusicLibPage/SongTable.js</a>, <a href="content_MusicLibPage_SongTable.js.html#line150">line 150</a>
     </li></ul></dd>
     
 
@@ -910,7 +408,7 @@ actual text.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="content_MusicLibPage_SongTable.js.html">content/MusicLibPage/SongTable.js</a>, <a href="content_MusicLibPage_SongTable.js.html#line122">line 122</a>
+        <a href="content_MusicLibPage_SongTable.js.html">content/MusicLibPage/SongTable.js</a>, <a href="content_MusicLibPage_SongTable.js.html#line127">line 127</a>
     </li></ul></dd>
     
 
@@ -1046,7 +544,7 @@ actual text.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="content_MusicLibPage_SongTable.js.html">content/MusicLibPage/SongTable.js</a>, <a href="content_MusicLibPage_SongTable.js.html#line168">line 168</a>
+        <a href="content_MusicLibPage_SongTable.js.html">content/MusicLibPage/SongTable.js</a>, <a href="content_MusicLibPage_SongTable.js.html#line173">line 173</a>
     </li></ul></dd>
     
 
@@ -1170,210 +668,6 @@ actual text.</p>
 
     
 
-    <h4 class="name" id="sortSongs"><span class="type-signature"></span>sortSongs<span class="signature">(rows, sortDirection, key)</span><span class="type-signature"> &rarr; {Array.&lt;Object>}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="content_MusicLibPage_MusicLibPage.js.html">content/MusicLibPage/MusicLibPage.js</a>, <a href="content_MusicLibPage_MusicLibPage.js.html#line288">line 288</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Sort songs by title, album, artist, or genre.</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>rows</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;Object></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Rows to sort</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>sortDirection</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;ASC&quot; or &quot;DESC&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>key</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Song field to sort by</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>Sorted rows</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;Object></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
     <h4 class="name" id="validateSongData"><span class="type-signature"></span>validateSongData<span class="signature">(setAddModalOpen, song, setSong)</span><span class="type-signature"></span></h4>
 
     
@@ -1386,7 +680,7 @@ actual text.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_AddSong_AddSong.js.html">components/AddSong/AddSong.js</a>, <a href="components_AddSong_AddSong.js.html#line43">line 43</a>
+        <a href="components_AddSong_AddSong.js.html">components/AddSong/AddSong.js</a>, <a href="components_AddSong_AddSong.js.html#line47">line 47</a>
     </li></ul></dd>
     
 
@@ -1571,14 +865,11 @@ not to close the dialog.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_AddSong_AddSong.js.html">components/AddSong/AddSong.js</a>, <a href="components_AddSong_AddSong.js.html#line3">line 3</a>
+        <a href="components_AddSong_AddSong.js.html">components/AddSong/AddSong.js</a>, <a href="components_AddSong_AddSong.js.html#line23">line 23</a>
     </li></ul></dd>
     
 
     
-    <dt class="tag-version">Version:</dt>
-    <dd class="tag-version"><ul class="dummy"><li>1.0.0</li></ul></dd>
-    
 
     
 
@@ -1594,13 +885,6 @@ not to close the dialog.</p>
 
     
 
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kai</li>
-        </ul>
-    </dd>
     
 
     
@@ -1643,89 +927,6 @@ not to close the dialog.</p>
 
             
                 
-<h4 class="name" id="MusicLibPage">MusicLibPage</h4>
-
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="content_MusicLibPage_MusicLibPage.js.html">content/MusicLibPage/MusicLibPage.js</a>, <a href="content_MusicLibPage_MusicLibPage.js.html#line3">line 3</a>
-    </li></ul></dd>
-    
-
-    
-    <dt class="tag-version">Version:</dt>
-    <dd class="tag-version"><ul class="dummy"><li>1.0.0</li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kai</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Displays the central content of the music library</p>
-</div>
-
-
-
-    <h5>Type:</h5>
-    <ul>
-        <li>
-            
-<span class="param-type">Object</span>
-
-
-        </li>
-    </ul>
-
-
-
-
-
-
-            
-                
 <h4 class="name" id="SongTable">SongTable</h4>
 
 
@@ -1737,14 +938,11 @@ not to close the dialog.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="content_MusicLibPage_SongTable.js.html">content/MusicLibPage/SongTable.js</a>, <a href="content_MusicLibPage_SongTable.js.html#line3">line 3</a>
+        <a href="content_MusicLibPage_SongTable.js.html">content/MusicLibPage/SongTable.js</a>, <a href="content_MusicLibPage_SongTable.js.html#line95">line 95</a>
     </li></ul></dd>
     
 
     
-    <dt class="tag-version">Version:</dt>
-    <dd class="tag-version"><ul class="dummy"><li>1.0.0</li></ul></dd>
-    
 
     
 
@@ -1760,13 +958,6 @@ not to close the dialog.</p>
 
     
 
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kai</li>
-        </ul>
-    </dd>
     
 
     
@@ -1820,14 +1011,11 @@ not to close the dialog.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_WelcomeHeader_WelcomeHeader.js.html">components/WelcomeHeader/WelcomeHeader.js</a>, <a href="components_WelcomeHeader_WelcomeHeader.js.html#line3">line 3</a>
+        <a href="components_WelcomeHeader_WelcomeHeader.js.html">components/WelcomeHeader/WelcomeHeader.js</a>, <a href="components_WelcomeHeader_WelcomeHeader.js.html#line53">line 53</a>
     </li></ul></dd>
     
 
     
-    <dt class="tag-version">Version:</dt>
-    <dd class="tag-version"><ul class="dummy"><li>1.0.0</li></ul></dd>
-    
 
     
 
@@ -1843,13 +1031,6 @@ not to close the dialog.</p>
 
     
 
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Kai</li>
-        </ul>
-    </dd>
     
 
     
@@ -1908,7 +1089,7 @@ not to close the dialog.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Wed Jun 03 2020 14:40:23 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Wed Jun 03 2020 15:39:28 GMT-0400 (Eastern Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

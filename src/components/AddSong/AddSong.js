@@ -3,19 +3,8 @@
 /**
  * @author Kai
  * @version 1.0.0
- * @module AddSongModal
- * @description Displays the create or edit song dialog
+ *
  * @exports AddSongModal
- *
- * @typedef {Object} AddSongModal
- *
- * @param  {Boolean}      addModalOpen    Whether or not the dialog is open
- * @param  {String}       prefix          Namespace to make ids unique
- * @param  {Function}     setAddModalOpen Set dialog open state
- * @param  {Object}       song            Song object with data as entered in the dialog
- * @param  {Function}     setSong         Set the song data
- * @param  {Boolean}      isEditMode      Whether or not the dialog is in edit mode
- * @param  {Function}     confirmCallback The callback when the Submit button is clicked
  *
  */
 ////////////////////////////////////////////////////////////////////////////////
@@ -31,6 +20,10 @@ import { createSong } from "store/actions/musicLib";
 import store from "../../store";
 import * as constants from "../../constants/musicLib";
 
+/**
+ * @module AddSongModal
+ * @description Displays the create or edit song dialog
+ */
 const AddSongModal = ({
   addModalOpen,
   prefix,
@@ -295,7 +288,15 @@ const AddSongModal = ({
 /**
  * Add song dialog. Described in header comments.
  *
- * @type {Object}  AddSongModal
+ * @typedef {Object} AddSongModal
+ *
+ * @property  {Boolean}      addModalOpen    Whether or not the dialog is open
+ * @property  {String}       prefix          Namespace to make ids unique
+ * @property  {Function}     setAddModalOpen Set dialog open state
+ * @property  {Object}       song            Song object with data as entered in the dialog
+ * @property  {Function}     setSong         Set the song data
+ * @property  {Boolean}      isEditMode      Whether or not the dialog is in edit mode
+ * @property  {Function}     confirmCallback The callback when the Submit button is clicked
  */
 AddSongModal.propTypes = {
   addModalOpen: PropTypes.bool,
