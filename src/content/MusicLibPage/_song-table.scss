@@ -13,6 +13,18 @@
 
 .kai-delete-song-modal {
   position: absolute;
-  top: 600px;
   left: -100px;
+  display: none;
+}
+
+.kai-delete-song-modal.bx--modal.is-visible {
+  display: flex;
+}
+
+.kai-edit-song-modal {
+  display: none;
+}
+
+.kai-edit-song-modal.bx--modal.is-visible {
+  display: flex;
 }
