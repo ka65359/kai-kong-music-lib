@@ -138,13 +138,13 @@ export const MusicLibPage = ({
   };
 
   const getAlbumImage = (row) => {
-    if (row.Album_Image) {
+    if (_.get(row, "Album_Image.length")) {
       return (
         <img
           className="kai-table-album-img"
           alt={row.Album}
           title={row.Album}
-          src={`https://kaimusic-187c.restdb.io/media/${row.Album_Image}?s=t`}
+          src={`https://kaimusic-187c.restdb.io/media/${row.Album_Image[0]}?s=t`}
         />
       );
     } else if (row.Album_Link) {
