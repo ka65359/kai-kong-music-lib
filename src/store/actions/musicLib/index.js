@@ -90,6 +90,10 @@ export const updateSong = (payload) => {
   if (payload._mock) {
     delete payload._mock;
   }
+  delete payload.AlbumImage;
+  if (payload.titleText) {
+    payload.Title = payload.titleText;
+  }
   return (dispatch) => {
     return fetch("https://kaimusic-187c.restdb.io/rest/songs/" + payload._id, {
       method: "PUT",

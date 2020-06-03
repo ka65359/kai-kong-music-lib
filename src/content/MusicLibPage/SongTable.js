@@ -119,49 +119,49 @@ const SongTable = ({
   onsetCurrentSong
 }) => {
   const moveRowUp = (row) => {
-    let index = rows.findIndex((arow) => arow._id === row.id);
-    const orow = rows[index];
+    let index = songs.findIndex((arow) => arow._id === row.id);
+    const orow = songs[index];
     if (index > 0) {
       let newIndex = index - 1;
-      const temp = rows[newIndex];
-      rows[newIndex] = orow;
-      rows[index] = temp;
+      const temp = songs[newIndex];
+      songs[newIndex] = orow;
+      songs[index] = temp;
       if (_.get(store.getState(), "ui.musicLib.tableSortData.key")) {
         // TODO: This is nasty, need to find a better way to clear sort manually
         window.kaiAppData.songTableRef.current.state.sortHeaderKey = null;
         setTableSortData({ key: "", sortDirection: "" });
       }
-      setAllSongs(rows);
+      setAllSongs(songs);
     }
   };
   const moveRowDown = (row) => {
-    let index = rows.findIndex((arow) => arow._id === row.id);
-    const orow = rows[index];
-    if (index >= 0 && index < rows.length - 1) {
+    let index = songs.findIndex((arow) => arow._id === row.id);
+    const orow = songs[index];
+    if (index >= 0 && index < songs.length - 1) {
       let newIndex = index + 1;
-      const temp = rows[newIndex];
-      rows[newIndex] = orow;
-      rows[index] = temp;
+      const temp = songs[newIndex];
+      songs[newIndex] = orow;
+      songs[index] = temp;
       if (_.get(store.getState(), "ui.musicLib.tableSortData.key")) {
         // TODO: This is nasty, need to find a better way to clear sort manually
         window.kaiAppData.songTableRef.current.state.sortHeaderKey = null;
         setTableSortData({ key: "", sortDirection: "" });
       }
-      setAllSongs(rows);
+      setAllSongs(songs);
     }
   };
   const moveToTop = (row) => {
-    let index = rows.findIndex((arow) => arow._id === row.id);
+    let index = songs.findIndex((arow) => arow._id === row.id);
     if (index > 0) {
-      const temp = rows[index];
-      rows.splice(index, 1);
-      rows.unshift(temp);
+      const temp = songs[index];
+      songs.splice(index, 1);
+      songs.unshift(temp);
       if (_.get(store.getState(), "ui.musicLib.tableSortData.key")) {
         // TODO: This is nasty, need to find a better way to clear sort manually
         window.kaiAppData.songTableRef.current.state.sortHeaderKey = null;
         setTableSortData({ key: "", sortDirection: "" });
       }
-      setAllSongs(rows);
+      setAllSongs(songs);
     }
   };
   const updateSongData = (song) => {
