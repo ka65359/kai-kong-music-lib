@@ -1,6 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * @author Kai
+ * @version 1.0.0
+ * @module WelcomeHeader
+ * @description Displays header including the Add song button
+ * @exports WelcomeHeader
+ *
+ * @typedef {Object} WelcomeHeader
+ *
+ */
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 import React from "react";
 import { connect } from "react-redux";
 import { compose, lifecycle, pure, withState, withHandlers } from "recompose";
+import PropTypes from "prop-types";
 import _ from "lodash";
 import {
   Header,
@@ -72,6 +87,18 @@ const WelcomeHeader = ({
       />
     </div>
   );
+};
+
+/**
+ * These values come from state and store.
+ *
+ * @type {Object}  WelcomeHeader
+ */
+WelcomeHeader.propTypes = {
+  addModalOpen: PropTypes.boolean,
+  onsetAddModalOpen: PropTypes.func.isRequired,
+  song: PropTypes.object.isRequired,
+  onsetSong: PropTypes.func.isRequired
 };
 
 export default enhance(WelcomeHeader);

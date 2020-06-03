@@ -8,7 +8,8 @@
  * @exports SongTable
  *
  * @typedef {Object} SongTable
- * @param  {Object[]}  rows           Table rows
+ * @param  {Object[]}  songs          All songs in the database
+ * @param  {Object[]}  rows           Table rows for the current page
  * @param  {Object[]}  headers        Table headers
  * @param  {function}  onSearchUpdate Callback when the search bar value is changed
  *
@@ -118,6 +119,13 @@ const SongTable = ({
   currentSong,
   onsetCurrentSong
 }) => {
+  /**
+   * Move the row up one in the table
+   *
+   * @method moveRowUp
+   *
+   * @param  {Object}    row The row to move
+   */
   const moveRowUp = (row) => {
     let index = songs.findIndex((arow) => arow._id === row.id);
     const orow = songs[index];
@@ -134,6 +142,13 @@ const SongTable = ({
       setAllSongs(songs);
     }
   };
+  /**
+   * Move the row down one in the table
+   *
+   * @method moveRowDown
+   *
+   * @param  {Object}    row The row to move
+   */
   const moveRowDown = (row) => {
     let index = songs.findIndex((arow) => arow._id === row.id);
     const orow = songs[index];
@@ -150,6 +165,13 @@ const SongTable = ({
       setAllSongs(songs);
     }
   };
+  /**
+   * Move the row to the top of the table
+   *
+   * @method moveToTop
+   *
+   * @param  {Object}    row The row to move
+   */
   const moveToTop = (row) => {
     let index = songs.findIndex((arow) => arow._id === row.id);
     if (index > 0) {
@@ -164,12 +186,14 @@ const SongTable = ({
       setAllSongs(songs);
     }
   };
+  // REST call to update
   const updateSongData = (song) => {
     if (!songUpdating.includes(song._id)) {
       setSongUpdating(song._id);
       updateSong(song);
     }
   };
+  // Open delete confirmation dialog
   const removeSong = (row) => {
     let elem = document.getElementsByClassName("kai-delete-song-modal");
     if (elem.length) {
@@ -179,6 +203,7 @@ const SongTable = ({
     onsetDelModalOpen(true);
   };
 
+  // Create HTML for menu item with an icon followed by a label
   const getMenuItemWithIcon = (icon, label, className) => {
     return (
       <span className={"kai-clickable-icon " + className}>
@@ -189,6 +214,7 @@ const SongTable = ({
     );
   };
 
+  // Generate confirm delete dialog HTML
   const getConfirmDeleteDialog = () => {
     const closeDialog = () => {
       onsetCurrentSong({});
@@ -216,6 +242,7 @@ const SongTable = ({
     );
   };
 
+  // Create Edit song dialog HTML
   const getEditDialog = () => {
     return (
       <AddSong
@@ -230,6 +257,13 @@ const SongTable = ({
     );
   };
 
+  /**
+   * Set song data to prepopulate edit dialog and open it.
+   *
+   * @method handleEditClicked
+   *
+   * @param  {Object}          row The row to edit
+   */
   const handleEditClicked = (row) => {
     let index = songs.findIndex((song) => song._id === row.id);
     if (index >= 0) {
@@ -254,6 +288,7 @@ const SongTable = ({
     window.kaiAppData = {};
   }
   window.kaiAppData.songTableRef = React.createRef();
+
   return (
     <div>
       <DataTable
@@ -378,10 +413,30 @@ const SongTable = ({
   );
 };
 
+/**
+ * All but the first four properties are from state or store.
+ *
+ * @type {Object}
+ */
 SongTable.propTypes = {
+  songs: PropTypes.array.isRequired,
   rows: PropTypes.array.isRequired,
   headers: PropTypes.array.isRequired,
-  onSearchUpdate: PropTypes.func.isRequired
+  onSearchUpdate: PropTypes.func.isRequired,
+  setTableSortData: PropTypes.func.isRequired,
+  setAllSongs: PropTypes.func.isRequired,
+  updateSong: PropTypes.func.isRequired,
+  deleteSong: PropTypes.func.isRequired,
+  editModalOpen: PropTypes.boolean.isRequired,
+  onsetEditModalOpen: PropTypes.func.isRequired,
+  editSong: PropTypes.object.isRequired,
+  onsetEditSong: PropTypes.func.isRequired,
+  songUpdating: PropTypes.boolean.isRequired,
+  setSongUpdating: PropTypes.func.isRequired,
+  delModalOpen: PropTypes.boolean.isRequired,
+  onsetDelModalOpen: PropTypes.func.isRequired,
+  currentSong: PropTypes.object.isRequired,
+  onsetCurrentSong: PropTypes.func.isRequired
 };
 
 export default enhance(SongTable);

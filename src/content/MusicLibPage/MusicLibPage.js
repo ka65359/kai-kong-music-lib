@@ -1,6 +1,21 @@
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * @author Kai
+ * @version 1.0.0
+ * @module MusicLibPage
+ * @description Displays the central content of the music library
+ * @exports MusicLibPage
+ *
+ * @typedef {Object} MusicLibPage
+ *
+ */
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { compose, lifecycle, pure } from "recompose";
+import PropTypes from "prop-types";
 import _ from "lodash";
 import { DataTableSkeleton, Pagination } from "carbon-components-react";
 import Favorite32 from "@carbon/icons-react/lib/favorite/20";
@@ -98,6 +113,17 @@ export const MusicLibPage = ({
     }
   ];
 
+  /**
+   * We transform the Title attribute into an HTML anchor if a
+   * play link was specified, but we need to keep track of the
+   * actual text.
+   *
+   * @method getTitleText
+   *
+   * @param  {Object}     row Current row data
+   *
+   * @return {String}         The song title text
+   */
   const getTitleText = (row) => {
     // issues with reference passing
     if (typeof row.titleText === "string") {
@@ -109,6 +135,16 @@ export const MusicLibPage = ({
     return "";
   };
 
+  /**
+   * We transform the Favorite attribute into an HTML image,
+   * but we need to keep track of the actual boolean value.
+   *
+   * @method getFavValue
+   *
+   * @param  {Object}     row Current row data
+   *
+   * @return {Boolean}        Whether or not the song is favorited
+   */
   const getFavValue = (row) => {
     // issues with reference passing
     if (typeof row.favVal === "boolean") {
@@ -129,6 +165,7 @@ export const MusicLibPage = ({
     }
   };
 
+  // Get Favorite icon html
   const getFavButton = (row) => {
     let icon = getFavValue(row) ? <FavoriteFilled32 /> : <Favorite32 />;
     let classStr = "kai-fav-icon kai-fav-" + row._id;
@@ -143,6 +180,7 @@ export const MusicLibPage = ({
     );
   };
 
+  // Get song title as a link to play the song
   const getSongTitleLink = (row) => {
     if (typeof row.Title !== "string") {
       return row.Title;
@@ -159,6 +197,7 @@ export const MusicLibPage = ({
     );
   };
 
+  // Get the html for the album image
   const getAlbumImage = (row) => {
     if (row.Album_Link) {
       return (
@@ -211,6 +250,18 @@ export const MusicLibPage = ({
 
   const rows = getRowItems(songs);
 
+  /**
+   * If a search string is applied this will return any
+   * song who's title, artist, or album contains the string.
+   * Search is case-insensitive.
+   *
+   * @method getFilteredRows
+   *
+   * @param  {String}        searchStr Search string
+   * @param  {Object[]}      rows      Rows to filter
+   *
+   * @return {Object[]}                Filtered rows
+   */
   const getFilteredRows = (searchStr, rows) => {
     if (!searchStr) {
       return rows;
@@ -234,6 +285,17 @@ export const MusicLibPage = ({
     return filteredRows;
   };
 
+  /**
+   * Sort songs by title, album, artist, or genre.
+   *
+   * @method sortSongs
+   *
+   * @param  {Object[]}   rows          Rows to sort
+   * @param  {String}     sortDirection "ASC" or "DESC"
+   * @param  {String}     key           Song field to sort by
+   *
+   * @return {Object[]}                 Sorted rows
+   */
   const sortSongs = (rows, sortDirection, key) => {
     if (
       key == "Album_Link" ||
@@ -241,7 +303,7 @@ export const MusicLibPage = ({
       key == "Play_Link" ||
       key == "Favorite"
     ) {
-      console.error("Sorting by " + key + " is disabled.");
+      console.error("Error: Sorting by " + key + " is disabled.");
       return rows;
     }
     const compare = (a, b) => {
@@ -292,6 +354,7 @@ export const MusicLibPage = ({
   };
 
   let displayedRows = rows;
+  // If we are on favorites view, only display favorited songs
   if (currentPage == "favorites") {
     displayedRows = rows.filter((arow) => arow.favVal === true);
   }
@@ -342,6 +405,26 @@ export const MusicLibPage = ({
       </div>
     </div>
   );
+};
+
+/**
+ * These values come from state and store.
+ *
+ * @type {Object}  MusicLibPage
+ */
+MusicLibPage.propTypes = {
+  currentPage: PropTypes.string.isRequired,
+  songs: PropTypes.array.isRequired,
+  searchStr: PropTypes.string,
+  tableSortData: PropTypes.shape({
+    key: PropTypes.string,
+    sortDirection: PropTypes.string
+  }).required,
+  dataFetching: PropTypes.boolean,
+  updateSong: PropTypes.func.isRequired,
+  songUpdating: PropTypes.boolean,
+  setSongUpdating: PropTypes.func.isRequired,
+  setTableSearchStr: PropTypes.func.isRequired
 };
 
 export default enhance(MusicLibPage);
