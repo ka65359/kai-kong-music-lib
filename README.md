@@ -51,7 +51,7 @@ Other enhancement details can be found [here](https://github.com/ka65359/kai-kon
 
 ---
 ## Requirements
-This application is currently only supported in chrome when running the project locally. Please see step 5.
+This application is currently only supported in Chrome when running the project locally. Please see step 5.
 
 ## Instructions to run locally
 1. Clone the repo
